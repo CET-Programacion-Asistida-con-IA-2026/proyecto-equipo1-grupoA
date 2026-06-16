@@ -1,35 +1,26 @@
-## Grupo A/B - Equipo {numero}
-_Curso de Programación Asistida con IA - Chicas en Tecnología_ 🚀
+# 🌎 +OP · SumaOportunidades
 
-```⚠️ Dejar la opción correcta entre Grupo A (Grupo de 17 a 19hs) y Grupo B (Grupo de 19 a 21hs) y agregar el número de equipo ⚠️```
+> **Proyecto Final — Equipo 1A**  
+> *Curso de Programación Asistida con IA — Chicas en Tecnología 🚀*  
+> 🌐 **[Ver Demo en Vivo (Netlify)](https://bright-dusk-732987.netlify.app)** · 🎨 **[Ver Moodboard en Canva](https://canva.link/3xcv0yend8u83dn)**
 
-En este repositorio, se presenta el sitio web realizado durante el curso de programación frontend de CET.
+---
 
-### 📄 Entregas
-**Entrega #1**: planificación de la solución y primeros resultados que obtengamos con la IA:
+## 📝 Resumen del Proyecto
 
-📝 Edición del Archivo README incluyendo:
-- Definición de la problemática que eligieron abordar
-- Relación con los *Objetivos de Desarrollo Sostenible (ODS)*[^1]
-- Explicación de la solución tecnológica que están desarrollando
-> [!TIP]
-> Aprovechen los [formatos del README](https://docs.github.com/es/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) para escribir diferentes secciones
+**SumaOportunidades** es una plataforma web inclusiva diseñada para reducir la brecha de desigualdad social (**ODS 10**). El sitio conecta de forma gratuita a personas en situaciones vulnerables y/o con discapacidades con becas, cursos, capacitaciones y oportunidades laborales del Gobierno de la Ciudad, facilitando su inserción en el mundo del trabajo.
 
-🎨 Moodboard
+A su vez, actúa como un espacio de transparencia laboral, permitiendo a las usuarias **buscar empresas o sucursales específicas por su nombre para informarse sobre el ambiente de trabajo** o dejar sus propios testimonios antes de postularse.
 
-🧩 Archivos generados con asistencia de IA: ```index.html```, ```style.css```, ```script.js```
+### ⚙️ Características y Funcionalidades Clave
+*   🗺️ **Mapa Social Interactivo:** Desarrollado con *Leaflet.js*, muestra comedores (🔴), bibliotecas/puntos de lectura (🔵) y centros de donativos (🟢) sin necesidad de APIs pagas.
+*   📊 **Test de Recomendaciones:** Diagnóstico interactivo que evalúa el perfil del usuario para sugerirle cursos y empleos personalizados.
+*   💬 **Espacio Comunitario, Reseñas y Voluntariado:** Foro abierto para compartir avisos de empleo y sección para sumarse como voluntario. Incluye un motor de búsqueda por empresa/sucursal para dejar comentarios o informarse detalladamente sobre el clima y ambiente laboral.
+*   🎨 **Identidad Visual & Diseño:** Concepto moderno y 100% responsivo basado en la tipografía *Syne*. Podés explorar nuestra paleta de colores tierra/azul marino (`#082052`, `#FF6B35`) e iconografía inclusiva en nuestro **[Moodboard Oficial de Canva](https://canva.link/3xcv0yend8u83dn)**.
 
+### 🛠️ Tecnologías Utilizadas
+*   **Frontend:** HTML5, CSS3 (Animaciones, efectos blur y diseño responsive).
+*   **Interactividad:** JavaScript (Lógica de test, buscador de empresas con filtrado de ambiente laboral, carrusel automatizado y validación de comentarios).
+*   **Mapas:** Leaflet.js + OpenStreetMap.
 
-**Entrega #2 (Final)**: se esperan modificaciones en el código respecto a la entrega anterior, que pueden incluir nuevos archivos o extensión de los existentes (debe haber al menos un archivo de cada lenguaje visto - HTML, CSS y Javascript)
-
-💡 Es una buena idea llevar un registro de lo que cambiamos. Por ejemplo
-```
-- Agregamos Bootstrap para el carrousel de imágenes...
-- Modificamos el texto de la sección de bienvenida...
-- Transformamos los textos sobre redes sociales en links...
-```
-
-Ahora si, ¡A programar! 🚀
-
-
-[^1]: Los Objetivos de Desarrollo Sostenible u Objetivos Globales, también conocidos como Agenda 2030, son 17 objetivos globales interconectados diseñados para ser un «plan para lograr un futuro mejor y más sostenible para todos». Más información en https://www.un.org/sustainabledevelopment/es/objetivos-de-desarrollo-sostenible/
+### 📁 Estructura del Repositorio
