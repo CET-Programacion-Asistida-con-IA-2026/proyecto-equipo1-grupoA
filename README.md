@@ -10,7 +10,7 @@
 
 **SumaOportunidades** es una plataforma web inclusiva diseñada para reducir la brecha de desigualdad social (**ODS 10**). El sitio conecta de forma gratuita a personas en situaciones vulnerables y/o con discapacidades con becas, cursos, capacitaciones y oportunidades laborales del Gobierno de la Ciudad, facilitando su inserción en el mundo del trabajo.
 
-A su vez, actúa como un espacio de transparencia laboral, permitiendo a las usuarias **buscar empresas o sucursales específicas por su nombre para informarse sobre el ambiente de trabajo** o dejar sus propios testimonios antes de postularse.
+A su vez, actúa como un espacio de transparencia laboral, permitiendo a los usuarios **buscar empresas o sucursales específicas por su nombre para informarse sobre el ambiente de trabajo** o dejar sus propios testimonios antes de postularse.
 
 ### ⚙️ Características y Funcionalidades Clave
 *   🗺️ **Mapa Social Interactivo:** Desarrollado con *Leaflet.js*, muestra comedores (🔴), bibliotecas/puntos de lectura (🔵) y centros de donativos (🟢) sin necesidad de APIs pagas.
