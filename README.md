@@ -23,4 +23,4 @@ A su vez, actúa como un espacio de transparencia laboral, permitiendo a las usu
 *   **Interactividad:** JavaScript (Lógica de test, buscador de empresas con filtrado de ambiente laboral, carrusel automatizado y validación de comentarios).
 *   **Mapas:** Leaflet.js + OpenStreetMap.
 
-### 📁 Estructura del Repositorio
+
