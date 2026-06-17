@@ -1,0 +1,443 @@
+/* ==========================================================================
+   1. RESET & VARIABLES (Paleta de colores del Moodboard)
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Colores oficiales del moodboard */
+  --color-bg-light: #F8F0E5;     /* Fondo claro principal (#F8F0E5) */
+  --color-primary: #082052;      /* Azul marino oscuro (#082052) */
+  --color-navy: #0f1e3f;         /* Azul oscuro secundario (#Of1e3f) */
+  --color-dark-blue: #213a56;    /* Azul intermedio (#213a56) */
+  --color-accent-gold: #cdaa80;  /* Dorado/Beige claro (#cdaa80) */
+  --color-accent-brown: #997953; /* Marrón tierra (#997953) */
+  
+  /* Fuentes */
+  --font-titles: 'Segoe UI', sans-serif;
+  --font-reviews: 'Syne', sans-serif; /* Tipografía para las reseñas */
+  --font-body: 'Segoe UI', sans-serif;
+}
+
+/* ==========================================================================
+   2. BODY & GENERAL
+   ========================================================================== */
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg-light); /* Fondo color hueso del moodboard */
+  color: var(--color-primary);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   3. HERO & HEADER
+   ========================================================================== */
+.hero {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-dark-blue));
+  color: white;
+  min-height: 100vh;
+  padding: 30px 10%;
+  position: relative;
+}
+
+/* NAVBAR */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 80px;
+}
+
+/* Estilo exacto del Logo +OP del Moodboard */
+nav .logo {
+  font-family: var(--font-body);
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+}
+
+/* El símbolo +OP en celeste cian brillante */
+nav .logo span:first-child {
+  color: #00aae4; 
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+/* El texto SumaOportunidades */
+nav .logo span:last-child {
+  color: white;
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+nav ul {
+  display: flex;
+  gap: 25px;
+  list-style: none;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: var(--color-accent-gold);
+}
+
+/* HERO CONTENT */
+.hero-content {
+  max-width: 700px;
+  margin-top: 80px;
+}
+
+.hero-content h1 {
+  font-size: 56px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.hero-content p {
+  font-size: 20px;
+  margin-bottom: 30px;
+  opacity: 0.95;
+}
+
+/* CONTENEDOR DE IMÁGENES (CARRUSEL) */
+.main-carousel {
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 40px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.main-carousel img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ==========================================================================
+   4. COMPONENTES & BOTONES
+   ========================================================================== */
+.btn {
+  display: inline-block;
+  background: white;
+  color: var(--color-primary);
+  text-decoration: none;
+  padding: 14px 24px;
+  border-radius: 25px; /* Más redondeado, estilo botón "MÁS INFO" */
+  font-weight: bold;
+  transition: 0.3s ease;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  background-color: var(--color-accent-gold);
+  color: var(--color-primary);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* ==========================================================================
+   5. SECCIONES GENERALES
+   ========================================================================== */
+section {
+  padding: 80px 10%;
+}
+
+section h2 {
+  font-size: 38px;
+  margin-bottom: 25px;
+  color: var(--color-primary);
+  text-transform: uppercase;
+}
+
+.info p {
+  max-width: 900px;
+  font-size: 18px;
+}
+
+/* ==========================================================================
+   6. GRIILLA DE ICONOS (Cursos, Trabajo, Discapacidad...)
+   ========================================================================== */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 30px;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-item img {
+  width: 60px;
+  height: 60px;
+  transition: transform 0.3s;
+}
+
+.icon-item:hover img {
+  transform: scale(1.1);
+}
+
+.icon-item span {
+  font-weight: bold;
+  color: var(--color-dark-blue);
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   7. SECCIÓN DE MAPAS
+   ========================================================================== */
+.map-section {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* ==========================================================================
+   8. ESTILO DE RESEÑA (Formato Indeed / Tipo Syne)
+   ========================================================================== */
+.reviews-container {
+  margin-top: 40px;
+}
+
+.review-card {
+  background: white;
+  border-left: 5px solid var(--color-accent-gold); /* Línea dorada decorativa */
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Aplicación estricta de la tipografía Syne a las reseñas */
+.review-card h4, 
+.review-card .review-title,
+.review-card .review-text {
+  font-family: var(--font-reviews);
+}
+
+.review-card h4 {
+  color: var(--color-primary);
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.review-rating {
+  color: #f59e0b; /* Estrellas doradas */
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.review-meta {
+  font-size: 13px;
+  color: var(--color-accent-brown);
+  margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   9. SECCIONES ANTERIORES OPTIMIZADAS (Cards, Stats, Forms)
+   ========================================================================== */
+.cards-container,
+.ods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 35px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transition: 0.3s ease;
+  border-top: 4px solid var(--color-navy);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-top-color: var(--color-accent-gold);
+}
+
+.card h3 {
+  color: var(--color-primary);
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.card p, .card li {
+  color: #4a5568;
+}
+
+/* DATO DEL DÍA / STATS */
+.stats {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-navy));
+  color: white;
+  border-radius: 30px;
+  padding: 50px 20px;
+  margin: 0 10%;
+  text-align: center;
+}
+
+.stats h2 {
+  color: white;
+}
+
+.stats p {
+  font-size: 22px;
+  color: var(--color-accent-gold);
+}
+
+/* FORMULARIOS */
+form {
+  background: white;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+  color: var(--color-primary);
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--color-accent-gold);
+  background-color: #fff;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid var(--color-dark-blue);
+}
+
+#resultado {
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 15px;
+  background: #e2e8f0;
+  color: var(--color-primary);
+  font-weight: bold;
+  display: none;
+}
+
+/* COMENTARIOS */
+.comentario {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  margin-top: 15px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.05);
+}
+
+.comentario h4 {
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
+   10. RESPONSIVE / MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+  }
+
+  section h2 {
+    font-size: 30px;
+  }
+
+  .stats {
+    margin: 0 5%;
+  }
+}
+
+/* Estilos para el nuevo botón dentro de la reseña */
+.review-card .btn {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin-top: 10px;
+  font-size: 12px;
+  transition: 0.3s;
+}
+
+.review-card .btn:hover {
+  background: var(--color-accent-brown);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ESTILOS PARA NUEVO FORO Y VOLUNTARIADO
+   ========================================================================== */
+
+#foro-empleo, #voluntariado {
+  background: white;
+  margin: 40px 10%;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+#voluntariado {
+  background: #f8f0e5; /* Color del moodboard para diferenciar la sección */
+  border: 2px solid var(--color-accent-gold);
+}
+
+#listaAvisos {
+  margin-top: 30px;
+}
+
+#listaAvisos .card {
+  margin-bottom: 15px;
+  border-left: 5px solid var(--color-accent-gold);
+}
+
+/* Ajuste para que los campos de los nuevos formularios sean consistentes */
+#foroForm, #voluntarioForm {
+  background: #fdfdfd;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  border-radius: 15px;
+}
