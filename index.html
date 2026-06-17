@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SumaOportunidades — Encontrá tu Oportunidad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="logo2.jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="hero">
+    <nav>
+      <div class="logo">
+        <span>+OP</span><span>SumaOportunidades</span>
+      </div>
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#mapas">Puntos de Donación</a></li>
+        <li><a href="#test">Test</a></li>
+        <li><a href="#reseñas">Reseñas</a></li>
+        <li><a href="#comentarios">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div class="hero-content" id="inicio">
+      <h1>Descubrí tu próximo paso profesional</h1>
+      <p>Una comunidad que potencia ideas para transformar el mundo. Te ayudamos a encontrar las mejores becas, cursos y salidas laborales que se adaptan a tu perfil.</p>
+      <a href="#test" class="btn">Comenzar Test</a>
+    </div>
+
+    <div class="main-carousel">
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="Grupo de personas trabajando en equipo y colaborando en proyectos sociales">
+    </div>
+  </header>
+
+  <section class="info">
+    <h2>Nuestros Pilares</h2>
+    <p>Explorá las diferentes opciones disponibles para impulsar tu carrera, sin importar tu nivel de experiencia previa.</p>
+    
+    <div class="icon-grid">
+      <div class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Icono Cursos">
+        <span>Cursos</span>
+      </div>
+      <div class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/2910/2910795.png" alt="Icono Trabajo">
+        <span>Trabajo</span>
+      </div>
+      <div class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png" alt="Icono Ayuda Cercana">
+        <span>Ayuda Cercana</span>
+      </div>
+      <div class="icon-item">
+        <img src="https://cdn-icons-png.flaticon.com/512/3163/3163231.png" alt="Icono Voluntariado">
+        <span>Voluntariado</span>
+      </div>
+    </div>
+
+    <div class="cards-container">
+      <div class="card">
+        <h3>Formación</h3>
+        <p>Accedé a cursos gratuitos y certificaciones oficiales para potenciar tu CV.</p>
+      </div>
+      <div class="card">
+        <h3>Inclusión</h3>
+        <p>Programas pensados para garantizar el acceso equitativo al mercado laboral.</p>
+      </div>
+      <div class="card">
+        <h3>Empleo</h3>
+        <p>Conectamos tus habilidades con portales de búsqueda activa en la región.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="mapas" class="map-section">
+    <h2>Mapa de Ayuda Social</h2>
+    <p>Encontrá los puntos de recolección en Ciudad Autónoma de Buenos Aires (CABA) y el Gran Buenos Aires (GBA) para donar libros y útiles escolares.</p>
+    
+    <div style="width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08); margin-top: 25px;">
+      <iframe 
+        src="https://maps.google.com/maps?q=Centros%20de%20donacion%20buenos%20aires&t=&z=11&ie=UTF8&iwloc=&output=embed" 
+        width="100%" 
+        height="450" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe >
+    </div>
+  </section>
+
+  <section class="stats">
+    <h2>Dato del Día</h2>
+    <p>"El 70% de las nuevas búsquedas laborales valoran las habilidades blandas tanto como la formación técnica."</p>
+  </section>
+
+  <section id="test">
+    <h2>Test: Encontrá tu Oportunidad</h2>
+    <form id="quizForm">
+      <label for="experiencia">¿Cuál es tu nivel de experiencia?</label>
+      <select id="experiencia" required>
+        <option value="" disabled selected>Seleccioná una opción</option>
+        <option value="sin">Sin experiencia</option>
+        <option value="con">Con experiencia / Profesional</option>
+      </select>
+
+      <label for="discapacidad">¿Poseés alguna discapacidad y buscás programas de inclusión?</label>
+      <select id="discapacidad" required>
+        <option value="" disabled selected>Seleccioná una opción</option>
+        <option value="si">Sí</option>
+        <option value="no">No</option>
+      </select>
+
+      <button type="submit" class="btn">Ver Recomendaciones</button>
+    </form> <div id="resultadoTest" style="margin-top: 20px;">
+        <h3>Te recomendamos:</h3>
+
+        <div id="res-sin-si" class="grupo-links" style="display:none;">
+            <a href="https://www.incluyeme.com" target="_blank">Incluyeme</a><br>
+            <a href="https://www.santanderopenacademy.com" target="_blank">Becas Santander Open Academy</a><br>
+            <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo Argentina</a>
+        </div>
+
+        <div id="res-sin-no" class="grupo-links" style="display:none;">
+            <a href="https://www.linkedin.com" target="_blank">Trabajos trainee en LinkedIn</a><br>
+            <a href="https://www.argentina.gob.ar/progresar" target="_blank">Becas Progresar</a><br>
+            <a href="https://www.santanderopenacademy.com" target="_blank">Cursos gratuitos Santander</a><br>
+            <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo</a>
+        </div>
+
+        <div id="res-con" class="grupo-links" style="display:none;">
+            <a href="https://www.linkedin.com/jobs" target="_blank">LinkedIn Jobs</a><br>
+            <a href="https://www.coursera.org" target="_blank">Cursos de especialización</a><br>
+            <a href="https://www.santanderopenacademy.com" target="_blank">Santander Open Academy</a>
+        </div>
+    </div>
+</section>
+
+ <section id="reseñas" class="reviews-container">
+  <h2>¿Qué opinan sobre estas empresas?</h2>
+  <p style="margin-bottom: 25px;">Buscá el nombre de una empresa o puesto para ver experiencias reales.</p>
+  
+  <!-- Aquí agregamos el buscador -->
+  <input type="text" id="searchReviews" placeholder="🔍 Buscar empresa o puesto..." style="width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #cdaa80;">
+
+  <!-- Aquí se inyectarán las tarjetas mediante el JavaScript -->
+  <div id="reviewsList"></div>
+  <div style="margin-top: 40px; background: #fff; padding: 20px; border-radius: 15px;">
+  <h3>¿Querés compartir tu experiencia laboral?</h3>
+  <form id="addReviewForm">
+    <input type="text" id="newEmpresa" placeholder="Nombre de la empresa" required>
+    <input type="text" id="newPuesto" placeholder="Puesto" required>
+    <input type="number" id="newRating" placeholder="Calificación (1-5)" step="0.1" min="1" max="5" required>
+    <textarea id="newComentario" placeholder="Tu reseña..." required></textarea>
+    <button type="submit" class="btn">Publicar Reseña</button>
+  </form>
+</div>
+</section>
+
+  <section id="comentarios">
+    <h2>Dejanos tu Comentario</h2>
+    <form id="comentarioForm">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" placeholder="Tu nombre" required>
+
+      <label for="comentario">Comentario</label>
+      <textarea id="comentario" placeholder="Escribí tu mensaje acá..." required></textarea>
+
+      <button type="submit" class="btn">Enviar Comentario</button>
+    </form>
+
+    <div id="comentariosLista"></div>
+
+    <section id="foro-empleo">
+  <h2>Foro de Empleos</h2>
+  <p>Compartí o buscá oportunidades laborales publicadas por la comunidad.</p>
+  
+  <form id="foroForm" style="margin-bottom: 20px;">
+    <input type="text" id="tituloAviso" placeholder="Título del empleo" required>
+    <textarea id="detalleAviso" placeholder="Detalles del puesto y contacto..." required></textarea>
+    <button type="submit" class="btn">Publicar Aviso</button>
+  </form>
+  
+  <div id="listaAvisos"></div>
+</section>
+
+<section id="voluntariado" style="background: #e2e8f0;">
+  <h2>Sumate como Voluntario</h2>
+  <p>Tu tiempo puede transformar vidas. Inscribite para colaborar en nuestros puntos de donación.</p>
+  
+  <form id="voluntarioForm">
+    <input type="text" id="nombreVol" placeholder="Nombre completo" required>
+    <input type="email" id="emailVol" placeholder="Tu correo electrónico" required>
+    <button type="submit" class="btn">¡Quiero ser Voluntario!</button>
+  </form>
+</section>
+
+  <script src="script.js"></script>
+</body>
+</html>
