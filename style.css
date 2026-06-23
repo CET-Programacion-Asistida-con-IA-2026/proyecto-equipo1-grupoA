@@ -214,13 +214,38 @@ section h2 {
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 
+.map-container{
+  width:100%;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  margin-top:25px;
+}
+.map-frame{
+  border:0;
+}
 /* ==========================================================================
    8. ESTILO DE RESEÑA (Formato Indeed / Tipo Syne)
    ========================================================================== */
 .reviews-container {
   margin-top: 40px;
 }
-
+.reviews-description {
+  margin-bottom: 25px;
+}
+.search-reviews {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--color-accent-gold);
+}
+.review-form-container {
+  margin-top: 40px;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+}
 .review-card {
   background: white;
   border-left: 5px solid var(--color-accent-gold); /* Línea dorada decorativa */
@@ -349,7 +374,9 @@ input:focus, textarea:focus, select:focus {
   font-weight: bold;
   display: none;
 }
-
+.resultado-test {
+  margin-top: 20px;
+}
 /* COMENTARIOS */
 .comentario {
   background: white;
@@ -434,10 +461,16 @@ input:focus, textarea:focus, select:focus {
   border-left: 5px solid var(--color-accent-gold);
 }
 
+.foro-form {
+  margin-bottom: 20px;
+}
 /* Ajuste para que los campos de los nuevos formularios sean consistentes */
 #foroForm, #voluntarioForm {
   background: #fdfdfd;
   border: 1px solid #e2e8f0;
   padding: 20px;
   border-radius: 15px;
+}
+.oculto {
+  display: none;
 }
