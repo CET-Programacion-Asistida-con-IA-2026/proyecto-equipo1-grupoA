@@ -10,24 +10,22 @@ document.getElementById("quizForm")
 
   const discapacidad =
     document.getElementById("discapacidad").value;
-
-  // Ocultar todos
-  document.getElementById("res-sin-si").style.display = "none";
-  document.getElementById("res-sin-no").style.display = "none";
-  document.getElementById("res-con").style.display = "none";
-
+  
+document.getElementById("res-sin-si").classList.add("oculto");
+document.getElementById("res-sin-no").classList.add("oculto");
+document.getElementById("res-con").classList.add("oculto");
   // Mostrar resultado correcto
   if (experiencia === "sin" && discapacidad === "si") {
-    document.getElementById("res-sin-si").style.display = "block";
+document.getElementById("res-sin-si").classList.remove("oculto");
 
   } else if (
     experiencia === "sin" &&
     discapacidad === "no"
   ) {
-    document.getElementById("res-sin-no").style.display = "block";
+document.getElementById("res-sin-no").classList.remove("oculto");
 
   } else if (experiencia === "con") {
-    document.getElementById("res-con").style.display = "block";
+  document.getElementById("res-con").classList.remove("oculto");
   }
 });
 
