@@ -80,12 +80,12 @@
     <h2>Mapa de Ayuda Social</h2>
     <p>Encontrá los puntos de recolección en Ciudad Autónoma de Buenos Aires (CABA) y el Gran Buenos Aires (GBA) para donar libros y útiles escolares.</p>
     
-    <div style="width: 100%; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.08); margin-top: 25px;">
+    <div class="map-container">
       <iframe 
         src="https://maps.google.com/maps?q=Centros%20de%20donacion%20buenos%20aires&t=&z=11&ie=UTF8&iwloc=&output=embed" 
         width="100%" 
         height="450" 
-        style="border:0;" 
+       class="map-frame"
         allowfullscreen="" 
         loading="lazy" 
         referrerpolicy="no-referrer-when-downgrade">
@@ -136,20 +136,20 @@
             <a href="https://www.santanderopenacademy.com" target="_blank">Santander Open Academy</a>
         </div>
       
-    </form> <div id="resultadoTest" style="margin-top: 20px;">
+    </form> <div id="resultadoTest" class="resultado-test">
     </div>
 </section>
 
  <section id="reseñas" class="reviews-container">
   <h2>¿Qué opinan sobre estas empresas?</h2>
-  <p style="margin-bottom: 25px;">Buscá el nombre de una empresa o puesto para ver experiencias reales.</p>
+ <p class="reviews-description">>Buscá el nombre de una empresa o puesto para ver experiencias reales.</p>
   
   <!-- Aquí agregamos el buscador -->
-  <input type="text" id="searchReviews" placeholder="🔍 Buscar empresa o puesto..." style="width: 100%; padding: 15px; margin-bottom: 20px; border-radius: 10px; border: 1px solid #cdaa80;">
+ <input class="search-reviews">
 
   <!-- Aquí se inyectarán las tarjetas mediante el JavaScript -->
   <div id="reviewsList"></div>
-  <div style="margin-top: 40px; background: #fff; padding: 20px; border-radius: 15px;">
+  <div class="review-form-container">
   <h3>¿Querés compartir tu experiencia laboral?</h3>
   <form id="addReviewForm">
     <input type="text" id="newEmpresa" placeholder="Nombre de la empresa" required>
@@ -174,12 +174,12 @@
     </form>
 
     <div id="comentariosLista"></div>
-
+  </section>
     <section id="foro-empleo">
   <h2>Foro de Empleos</h2>
   <p>Compartí o buscá oportunidades laborales publicadas por la comunidad.</p>
   
-  <form id="foroForm" style="margin-bottom: 20px;">
+  <form id="foroForm" class="foro-form">
     <input type="text" id="tituloAviso" placeholder="Título del empleo" required>
     <textarea id="detalleAviso" placeholder="Detalles del puesto y contacto..." required></textarea>
     <button type="submit" class="btn">Publicar Aviso</button>
