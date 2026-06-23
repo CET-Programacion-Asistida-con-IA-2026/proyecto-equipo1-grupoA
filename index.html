@@ -117,20 +117,20 @@
       <button type="submit" class="btn">Ver Recomendaciones</button>
        <h3>Te recomendamos:</h3>
 
-        <div id="res-sin-si" class="grupo-links" style="display:none;">
+        <div id="res-sin-si" class="grupo-links oculto">  
             <a href="https://www.incluyeme.com" target="_blank">Incluyeme</a><br>
             <a href="https://www.santanderopenacademy.com" target="_blank">Becas Santander Open Academy</a><br>
             <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo Argentina</a>
         </div>
 
-        <div id="res-sin-no" class="grupo-links" style="display:none;">
+       <div id="res-sin-no" class="grupo-links oculto">
             <a href="https://www.linkedin.com" target="_blank">Trabajos trainee en LinkedIn</a><br>
             <a href="https://www.argentina.gob.ar/progresar" target="_blank">Becas Progresar</a><br>
             <a href="https://www.santanderopenacademy.com" target="_blank">Cursos gratuitos Santander</a><br>
             <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo</a>
         </div>
 
-        <div id="res-con" class="grupo-links" style="display:none;">
+       <div id="res-con" class="grupo-links oculto">
             <a href="https://www.linkedin.com/jobs" target="_blank">LinkedIn Jobs</a><br>
             <a href="https://www.coursera.org" target="_blank">Cursos de especialización</a><br>
             <a href="https://www.santanderopenacademy.com" target="_blank">Santander Open Academy</a>
@@ -142,10 +142,15 @@
 
  <section id="reseñas" class="reviews-container">
   <h2>¿Qué opinan sobre estas empresas?</h2>
- <p class="reviews-description">>Buscá el nombre de una empresa o puesto para ver experiencias reales.</p>
+ <p class="reviews-description">Buscá el nombre de una empresa o puesto para ver experiencias reales.</p>
   
   <!-- Aquí agregamos el buscador -->
- <input class="search-reviews">
+<input
+  type="text"
+  id="searchReviews"
+  class="search-reviews"
+  placeholder="🔍 Buscar empresa o puesto..."
+>
 
   <!-- Aquí se inyectarán las tarjetas mediante el JavaScript -->
   <div id="reviewsList"></div>
@@ -188,7 +193,7 @@
   <div id="listaAvisos"></div>
 </section>
 
-<section id="voluntariado" style="background: #e2e8f0;">
+<section id="voluntariado">
   <h2>Sumate como Voluntario</h2>
   <p>Tu tiempo puede transformar vidas. Inscribite para colaborar en nuestros puntos de donación.</p>
   
