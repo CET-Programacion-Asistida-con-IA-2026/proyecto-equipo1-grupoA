@@ -13,7 +13,7 @@
 A su vez, actúa como un espacio de transparencia laboral, permitiendo a los usuarios **buscar empresas o sucursales específicas por su nombre para informarse sobre el ambiente de trabajo** o dejar sus propios testimonios antes de postularse.
 
 ### ⚙️ Características y Funcionalidades Clave
-*   🗺️ **Mapa Social Interactivo:** Desarrollado con *Leaflet.js*, muestra comedores (🔴), bibliotecas/puntos de lectura (🔵) y centros de donativos (🟢) sin necesidad de APIs pagas.
+*   🗺️ **Mapa Social Interactivo:** Desarrollado con *Google maps*, muestra centros de donativos (🟢) sin necesidad de APIs pagas.
 *   📊 **Test de Recomendaciones:** Diagnóstico interactivo que evalúa el perfil del usuario para sugerirle cursos y empleos personalizados.
 *   💬 **Espacio Comunitario, Reseñas y Voluntariado:** Foro abierto para compartir avisos de empleo y sección para sumarse como voluntario. Incluye un motor de búsqueda por empresa/sucursal para dejar comentarios o informarse detalladamente sobre el clima y ambiente laboral.
 *   🎨 **Identidad Visual & Diseño:** Concepto moderno y 100% responsivo basado en la tipografía *Syne*. Podés explorar nuestra paleta de colores tierra/azul marino (`#082052`, `#FF6B35`) e iconografía inclusiva en nuestro **[Moodboard Oficial de Canva](https://canva.link/3xcv0yend8u83dn)**.
