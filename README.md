@@ -2,7 +2,7 @@
 
 > **Proyecto Final — Equipo 1A**  
 > *Curso de Programación Asistida con IA — Chicas en Tecnología 🚀*  
-> 🌐 **[Ver Demo en Vivo (Netlify)](https://jazzy-starlight-adc772.netlify.app/)** · 🎨 **[Ver Moodboard en Canva](https://canva.link/3xcv0yend8u83dn)**
+> 🌐 **[Ver Demo en Vivo (Netlify)](https://fabulous-starlight-19bbfa.netlify.app/)** · 🎨 **[Ver Moodboard en Canva](https://canva.link/3xcv0yend8u83dn)**
 
 ---
 
