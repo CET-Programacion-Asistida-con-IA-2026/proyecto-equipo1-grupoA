@@ -22,6 +22,7 @@
         <li><a href="#mapas">Puntos de Donación</a></li>
         <li><a href="#test">Test</a></li>
         <li><a href="#reseñas">Reseñas</a></li>
+        <li><a href="#ia-tools">Herramientas IA</a></li>
         <li><a href="#comentarios">Contacto</a></li>
       </ul>
     </nav>
@@ -33,14 +34,13 @@
     </div>
 
     <div class="main-carousel">
-      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="Grupo de personas trabajando en equipo y colaborando en proyectos sociales">
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="Grupo de personas trabajando en equipo">
     </div>
   </header>
 
   <section class="info">
     <h2>Nuestros Pilares</h2>
     <p>Explorá las diferentes opciones disponibles para impulsar tu carrera, sin importar tu nivel de experiencia previa.</p>
-    
     <div class="icon-grid">
       <div class="icon-item">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Icono Cursos">
@@ -59,7 +59,6 @@
         <span>Voluntariado</span>
       </div>
     </div>
-
     <div class="cards-container">
       <div class="card">
         <h3>Formación</h3>
@@ -78,17 +77,12 @@
 
   <section id="mapas" class="map-section">
     <h2>Mapa de Ayuda Social</h2>
-    <p>Encontrá los puntos de recolección en Ciudad Autónoma de Buenos Aires (CABA) y el Gran Buenos Aires (GBA) para donar libros y útiles escolares.</p>
-    
+    <p>Encontrá los puntos de recolección en CABA y GBA para donar libros y útiles escolares.</p>
     <div class="map-container">
-      <iframe 
-        src="https://maps.google.com/maps?q=Centros%20de%20donacion%20buenos%20aires&t=&z=11&ie=UTF8&iwloc=&output=embed" 
-        width="100%" 
-        height="450" 
-       class="map-frame"
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade">
+      <iframe
+        src="https://maps.google.com/maps?q=Centros%20de%20donacion%20buenos%20aires&t=&z=11&ie=UTF8&iwloc=&output=embed"
+        width="100%" height="450" class="map-frame"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
   </section>
@@ -107,7 +101,6 @@
         <option value="sin">Sin experiencia</option>
         <option value="con">Con experiencia / Profesional</option>
       </select>
-
       <label for="discapacidad">¿Poseés alguna discapacidad y buscás programas de inclusión?</label>
       <select id="discapacidad" required>
         <option value="" disabled selected>Seleccioná una opción</option>
@@ -115,96 +108,331 @@
         <option value="no">No</option>
       </select>
       <button type="submit" class="btn">Ver Recomendaciones</button>
-       <h3>Te recomendamos:</h3>
+      <h3>Te recomendamos:</h3>
+      <div id="res-sin-si" class="grupo-links oculto">
+        <a href="https://www.incluyeme.com" target="_blank">Incluyeme</a><br>
+        <a href="https://www.santanderopenacademy.com" target="_blank">Becas Santander Open Academy</a><br>
+        <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo Argentina</a>
+      </div>
+      <div id="res-sin-no" class="grupo-links oculto">
+        <a href="https://www.linkedin.com" target="_blank">Trabajos trainee en LinkedIn</a><br>
+        <a href="https://www.argentina.gob.ar/progresar" target="_blank">Becas Progresar</a><br>
+        <a href="https://www.santanderopenacademy.com" target="_blank">Cursos gratuitos Santander</a><br>
+        <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo</a>
+      </div>
+      <div id="res-con" class="grupo-links oculto">
+        <a href="https://www.linkedin.com/jobs" target="_blank">LinkedIn Jobs</a><br>
+        <a href="https://www.coursera.org" target="_blank">Cursos de especialización</a><br>
+        <a href="https://www.santanderopenacademy.com" target="_blank">Santander Open Academy</a>
+      </div>
+    </form>
+    <div id="resultadoTest" class="resultado-test"></div>
+  </section>
 
-        <div id="res-sin-si" class="grupo-links oculto">  
-            <a href="https://www.incluyeme.com" target="_blank">Incluyeme</a><br>
-            <a href="https://www.santanderopenacademy.com" target="_blank">Becas Santander Open Academy</a><br>
-            <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo Argentina</a>
+  <section id="reseñas" class="reviews-container">
+    <h2>¿Qué opinan sobre estas empresas?</h2>
+    <p class="reviews-description">Buscá el nombre de una empresa o puesto para ver experiencias reales.</p>
+    <input type="text" id="searchReviews" class="search-reviews" placeholder="🔍 Buscar empresa o puesto...">
+    <div id="reviewsList"></div>
+
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormReseña()">✍️ Quiero dejar una reseña</button>
+    </div>
+    <div id="reviewFormWrap" class="oculto">
+      <div class="review-form-container">
+        <h3>Compartí tu experiencia laboral</h3>
+        <form id="addReviewForm">
+          <input type="text" id="newEmpresa" placeholder="Nombre de la empresa" required>
+          <input type="text" id="newPuesto" placeholder="Puesto" required>
+          <input type="number" id="newRating" placeholder="Calificación (1-5)" step="0.1" min="1" max="5" required>
+          <textarea id="newComentario" placeholder="Tu reseña..." required></textarea>
+          <button type="submit" class="btn">Publicar Reseña</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="ia-tools" class="ia-tools-section">
+    <div class="ia-tools-header">
+      <span class="ia-badge">✦ Powered by IA</span>
+      <h2>Herramientas con Inteligencia Artificial</h2>
+      <p>Tres herramientas gratuitas para potenciar tu búsqueda laboral, creadas especialmente para vos.</p>
+    </div>
+    <div class="ia-tools-grid">
+      <div class="ia-tool-card" onclick="abrirHerramienta('cv')">
+        <div class="ia-tool-icon">📄</div>
+        <h3>Generador de CV</h3>
+        <p>Respondé 5 preguntas simples y la IA arma tu currículum profesional listo para imprimir.</p>
+        <span class="ia-tool-btn">Crear mi CV →</span>
+      </div>
+      <div class="ia-tool-card" onclick="abrirHerramienta('entrevista')">
+        <div class="ia-tool-icon">🎯</div>
+        <h3>Simulador de Entrevista</h3>
+        <p>Practicá con preguntas reales de entrevista laboral y recibí feedback honesto.</p>
+        <span class="ia-tool-btn">Practicar ahora →</span>
+      </div>
+      <div class="ia-tool-card" onclick="abrirHerramienta('detector')">
+        <div class="ia-tool-icon">🔍</div>
+        <h3>Detector de Ofertas Falsas</h3>
+        <p>Pegá una oferta y la IA analiza si tiene señales de estafa. Protegete antes de postularte.</p>
+        <span class="ia-tool-btn">Analizar oferta →</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal-ia-overlay" id="modalIA">
+    <div class="modal-ia-content">
+      <button class="modal-ia-close" onclick="cerrarHerramienta()">✕ Cerrar</button>
+      <div id="modalIABody"></div>
+    </div>
+  </div>
+
+  <template id="tpl-cv">
+    <div class="tool-wrap">
+      <div class="tool-hero">
+        <h2>📄 Generador de CV con IA</h2>
+        <p>Respondé las preguntas y la IA arma tu CV profesional.</p>
+      </div>
+      <div class="tool-progress-wrap"><div class="tool-progress-bar" id="cvProgressBar"></div></div>
+      <p class="tool-step-label" id="cvStepLabel">Paso 1 de 5</p>
+      <div id="cvSteps">
+        <div class="tool-step active" data-step="1">
+          <div class="tool-step-icon">👋</div>
+          <h3>¿Cómo te llamás?</h3>
+          <div class="field-group"><label>Nombre completo</label><input type="text" id="cvNombre" placeholder="Ej: María González"></div>
+          <div class="field-group"><label>Email</label><input type="email" id="cvEmail" placeholder="Ej: maria@gmail.com"></div>
+          <div class="field-group"><label>Teléfono (opcional)</label><input type="text" id="cvTelefono" placeholder="Ej: 11 4567-8901"></div>
+          <div class="field-group"><label>Barrio / Ciudad</label><input type="text" id="cvUbicacion" placeholder="Ej: Flores, Buenos Aires"></div>
         </div>
-
-       <div id="res-sin-no" class="grupo-links oculto">
-            <a href="https://www.linkedin.com" target="_blank">Trabajos trainee en LinkedIn</a><br>
-            <a href="https://www.argentina.gob.ar/progresar" target="_blank">Becas Progresar</a><br>
-            <a href="https://www.santanderopenacademy.com" target="_blank">Cursos gratuitos Santander</a><br>
-            <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo</a>
+        <div class="tool-step" data-step="2">
+          <div class="tool-step-icon">💼</div>
+          <h3>¿Qué trabajo buscás?</h3>
+          <div class="field-group"><label>¿A qué puesto querés aplicar?</label><input type="text" id="cvPuesto" placeholder="Ej: Vendedora, Cuidadora, Administrativa..."></div>
+          <div class="field-group"><label>Describí tu experiencia o lo que hacés en tu día a día</label><textarea id="cvExperiencia" rows="4" placeholder="Ej: Trabajé cuidando personas mayores, cocino para 6, organizo el club del barrio..."></textarea></div>
         </div>
-
-       <div id="res-con" class="grupo-links oculto">
-            <a href="https://www.linkedin.com/jobs" target="_blank">LinkedIn Jobs</a><br>
-            <a href="https://www.coursera.org" target="_blank">Cursos de especialización</a><br>
-            <a href="https://www.santanderopenacademy.com" target="_blank">Santander Open Academy</a>
+        <div class="tool-step" data-step="3">
+          <div class="tool-step-icon">🎓</div>
+          <h3>¿Qué estudiaste o aprendiste?</h3>
+          <div class="field-group"><label>Educación formal</label><input type="text" id="cvEducacion" placeholder="Ej: Secundaria completa, Primaria, Terciario en curso..."></div>
+          <div class="field-group"><label>Cursos, talleres o capacitaciones</label><textarea id="cvCursos" rows="3" placeholder="Ej: Curso de primeros auxilios, taller de costura..."></textarea></div>
         </div>
-      
-   </form>
+        <div class="tool-step" data-step="4">
+          <div class="tool-step-icon">⚡</div>
+          <h3>¿Cuáles son tus puntos fuertes?</h3>
+          <div class="field-group">
+            <label>Seleccioná las que te representan</label>
+            <div class="chips-grid" id="cvChipsGrid">
+              <button type="button" class="chip" data-val="Responsable">Responsable</button>
+              <button type="button" class="chip" data-val="Organizada">Organizada</button>
+              <button type="button" class="chip" data-val="Puntual">Puntual</button>
+              <button type="button" class="chip" data-val="Trabajo en equipo">Trabajo en equipo</button>
+              <button type="button" class="chip" data-val="Atención al cliente">Atención al cliente</button>
+              <button type="button" class="chip" data-val="Comunicación">Comunicación</button>
+              <button type="button" class="chip" data-val="Iniciativa propia">Iniciativa propia</button>
+              <button type="button" class="chip" data-val="Resolución de problemas">Resolución de problemas</button>
+              <button type="button" class="chip" data-val="Cuidado de personas">Cuidado de personas</button>
+              <button type="button" class="chip" data-val="Cocina">Cocina</button>
+              <button type="button" class="chip" data-val="Limpieza y orden">Limpieza y orden</button>
+              <button type="button" class="chip" data-val="Computación básica">Computación básica</button>
+              <button type="button" class="chip" data-val="Redes sociales">Redes sociales</button>
+              <button type="button" class="chip" data-val="Liderazgo">Liderazgo</button>
+              <button type="button" class="chip" data-val="Empatía">Empatía</button>
+            </div>
+          </div>
+          <div class="field-group"><label>Otras habilidades (opcional)</label><input type="text" id="cvHabilidadesExtra" placeholder="Ej: Manejo de planillas, costura..."></div>
+        </div>
+        <div class="tool-step" data-step="5">
+          <div class="tool-step-icon">🌟</div>
+          <h3>Último paso</h3>
+          <div class="field-group"><label>¿Hablás otros idiomas?</label><input type="text" id="cvIdiomas" placeholder="Ej: Inglés básico, Portugués..."></div>
+          <div class="field-group">
+            <label>Disponibilidad horaria</label>
+            <select id="cvDisponibilidad">
+              <option value="">Seleccioná una opción</option>
+              <option>Tiempo completo</option><option>Medio tiempo</option>
+              <option>Fines de semana</option><option>Mañanas</option>
+              <option>Tardes</option><option>Flexible</option>
+            </select>
+          </div>
+          <div class="field-group"><label>¿Qué querés lograr con este trabajo? (opcional)</label><textarea id="cvObjetivo" rows="3" placeholder="Ej: Quiero crecer profesionalmente, estabilidad para mi familia..."></textarea></div>
+        </div>
+      </div>
+      <div class="tool-nav">
+        <button class="btn tool-btn-secondary" id="cvBtnPrev" onclick="cvPrev()">← Anterior</button>
+        <button class="btn" id="cvBtnNext" onclick="cvNext()">Siguiente →</button>
+        <button class="btn tool-btn-generate" id="cvBtnGenerate" onclick="cvGenerar()">✨ Generar mi CV</button>
+      </div>
+      <div class="tool-loading" id="cvLoading">
+        <div class="tool-loading-orb"></div>
+        <p>La IA está armando tu CV... ☕</p>
+      </div>
+      <div id="cvResultado" class="oculto">
+        <div class="cv-preview" id="cvPreview"></div>
+        <div class="tool-nav tool-nav-center">
+          <button class="btn" onclick="window.print()">⬇ Imprimir / Descargar</button>
+          <button class="btn tool-btn-secondary" onclick="cvReiniciar()">🔁 Hacer otro</button>
+        </div>
+      </div>
+    </div>
+  </template>
 
-<div id="resultadoTest" class="resultado-test">
-</div>
-</section>
+  <template id="tpl-entrevista">
+    <div class="tool-wrap">
+      <div id="entSetup">
+        <div class="tool-hero">
+          <h2>🎯 Simulador de Entrevista</h2>
+          <p>Practicá con preguntas reales y recibí feedback honesto.</p>
+        </div>
+        <div class="field-group"><label>¿A qué puesto vas a aplicar?</label><input type="text" id="entPuesto" placeholder="Ej: Recepcionista, Operaria, Vendedora..."></div>
+        <div class="field-group">
+          <label>¿Cuánta experiencia tenés?</label>
+          <select id="entNivel">
+            <option value="">Seleccioná una opción</option>
+            <option value="sin experiencia">Sin experiencia previa</option>
+            <option value="poca experiencia (menos de 1 año)">Poca experiencia (menos de 1 año)</option>
+            <option value="experiencia media (1-3 años)">Experiencia media (1-3 años)</option>
+            <option value="experiencia avanzada (más de 3 años)">Experiencia avanzada (más de 3 años)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Tipo de simulación</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="entTipo" value="5" checked> <span>Breve (5 preguntas)</span></label>
+            <label class="radio-option"><input type="radio" name="entTipo" value="10"> <span>Completa (10 preguntas)</span></label>
+          </div>
+        </div>
+        <button class="btn btn-full" onclick="entIniciar()">Comenzar entrevista →</button>
+      </div>
+      <div class="tool-loading" id="entLoading">
+        <div class="tool-loading-orb"></div>
+        <p id="entLoadingText">Preparando tu entrevista... 🧠</p>
+      </div>
+      <div id="entActiva" class="oculto">
+        <div class="ent-top">
+          <div class="ent-avatar">👩‍💼</div>
+          <div>
+            <strong>Ana — Entrevistadora virtual</strong>
+            <p class="tool-step-label" id="entProgressText">Pregunta 1 de 5</p>
+          </div>
+        </div>
+        <div class="tool-progress-wrap"><div class="tool-progress-bar" id="entProgressBar"></div></div>
+        <div class="ent-question-card">
+          <div id="entTyping" class="typing-indicator oculto"><span></span><span></span><span></span></div>
+          <p id="entPreguntaTexto"></p>
+        </div>
+        <div id="entAnswerArea">
+          <textarea id="entRespuesta" rows="4" placeholder="Escribí tu respuesta acá..."></textarea>
+          <div class="ent-answer-actions">
+            <button class="btn" id="entBtnResponder" onclick="entResponder()">Enviar respuesta →</button>
+          </div>
+        </div>
+        <div class="ent-feedback-card oculto" id="entFeedback">
+          <div class="ent-feedback-header">✨ Feedback de Ana</div>
+          <p id="entFeedbackTexto"></p>
+          <button class="btn" onclick="entSiguiente()">Siguiente →</button>
+        </div>
+      </div>
+      <div id="entFinal" class="oculto ent-final-wrap">
+        <div class="ent-final-icon">🏆</div>
+        <h3 class="ent-final-titulo">¡Entrevista completada!</h3>
+        <div class="ent-score" id="entScore"></div>
+        <div class="ent-final-feedback" id="entFinalFeedback"></div>
+        <div id="entFinalTips"></div>
+        <div class="ent-final-actions">
+          <button class="btn" onclick="entReiniciar()">🔁 Practicar de nuevo</button>
+          <button class="btn tool-btn-secondary" onclick="entVerHistorial()">📋 Ver mis respuestas</button>
+        </div>
+        <div id="entHistorialWrap" class="oculto ent-historial-wrap"></div>
+      </div>
+    </div>
+  </template>
 
- <section id="reseñas" class="reviews-container">
-  <h2>¿Qué opinan sobre estas empresas?</h2>
- <p class="reviews-description">Buscá el nombre de una empresa o puesto para ver experiencias reales.</p>
-  
-  <!-- Aquí agregamos el buscador -->
-<input
-  type="text"
-  id="searchReviews"
-  class="search-reviews"
-  placeholder="🔍 Buscar empresa o puesto..."
->
-
-  <!-- Aquí se inyectarán las tarjetas mediante el JavaScript -->
-  <div id="reviewsList"></div>
-  <div class="review-form-container">
-  <h3>¿Querés compartir tu experiencia laboral?</h3>
-  <form id="addReviewForm">
-    <input type="text" id="newEmpresa" placeholder="Nombre de la empresa" required>
-    <input type="text" id="newPuesto" placeholder="Puesto" required>
-    <input type="number" id="newRating" placeholder="Calificación (1-5)" step="0.1" min="1" max="5" required>
-    <textarea id="newComentario" placeholder="Tu reseña..." required></textarea>
-    <button type="submit" class="btn">Publicar Reseña</button>
-  </form>
-</div>
-</section>
+  <template id="tpl-detector">
+    <div class="tool-wrap">
+      <div class="tool-hero">
+        <h2>🔍 Detector de Ofertas Falsas</h2>
+        <p>Pegá el texto de una oferta y la IA analiza si tiene señales de estafa.</p>
+      </div>
+      <div id="detForm">
+        <div class="field-group">
+          <label>Pegá el texto de la oferta acá</label>
+          <textarea id="detOferta" rows="8" placeholder="Copiá y pegá el texto completo de la oferta..."></textarea>
+        </div>
+        <button class="btn btn-full" onclick="detAnalizar()">🔍 Analizar oferta</button>
+        <div class="det-ejemplos">
+          <p><strong>¿No tenés una oferta a mano?</strong> Probá con estos ejemplos:</p>
+          <button type="button" class="chip" onclick="detCargarEjemplo('falsa')">Oferta sospechosa</button>
+          <button type="button" class="chip" onclick="detCargarEjemplo('real')">Oferta legítima</button>
+        </div>
+      </div>
+      <div class="tool-loading" id="detLoading">
+        <div class="tool-loading-orb"></div>
+        <p>Analizando la oferta... 🔍</p>
+      </div>
+      <div id="detResultado" class="oculto">
+        <div class="det-resultado-card">
+          <div class="det-veredicto" id="detVeredicto"></div>
+          <div class="det-score-wrap">
+            <div class="det-score-bar-bg"><div class="det-score-bar" id="detScoreBar"></div></div>
+            <span id="detScoreLabel"></span>
+          </div>
+          <div id="detSeñales"></div>
+          <div id="detConsejo"></div>
+        </div>
+        <div class="det-reiniciar-wrap">
+          <button class="btn" onclick="detReiniciar()">🔁 Analizar otra oferta</button>
+        </div>
+      </div>
+    </div>
+  </template>
 
   <section id="comentarios">
     <h2>Dejanos tu Comentario</h2>
-    <form id="comentarioForm">
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" placeholder="Tu nombre" required>
-
-      <label for="comentario">Comentario</label>
-      <textarea id="comentario" placeholder="Escribí tu mensaje acá..." required></textarea>
-
-      <button type="submit" class="btn">Enviar Comentario</button>
-    </form>
-
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormComentario()">💬 Dejar un comentario</button>
+    </div>
+    <div id="comentarioFormWrap" class="oculto">
+      <form id="comentarioForm">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" placeholder="Tu nombre" required>
+        <label for="comentario">Comentario</label>
+        <textarea id="comentario" placeholder="Escribí tu mensaje acá..." required></textarea>
+        <button type="submit" class="btn">Enviar Comentario</button>
+      </form>
+    </div>
     <div id="comentariosLista"></div>
   </section>
-    <section id="foro-empleo">
-  <h2>Foro de Empleos</h2>
-  <p>Compartí o buscá oportunidades laborales publicadas por la comunidad.</p>
-  
-  <form id="foroForm" class="foro-form">
-    <input type="text" id="tituloAviso" placeholder="Título del empleo" required>
-    <textarea id="detalleAviso" placeholder="Detalles del puesto y contacto..." required></textarea>
-    <button type="submit" class="btn">Publicar Aviso</button>
-  </form>
-  
-  <div id="listaAvisos"></div>
-</section>
 
-<section id="voluntariado">
-  <h2>Sumate como Voluntario</h2>
-  <p>Tu tiempo puede transformar vidas. Inscribite para colaborar en nuestros puntos de donación.</p>
-  
-  <form id="voluntarioForm">
-    <input type="text" id="nombreVol" placeholder="Nombre completo" required>
-    <input type="email" id="emailVol" placeholder="Tu correo electrónico" required>
-    <button type="submit" class="btn">¡Quiero ser Voluntario!</button>
-  </form>
-</section>
+  <section id="foro-empleo">
+    <h2>Foro de Empleos</h2>
+    <p>Compartí o buscá oportunidades laborales publicadas por la comunidad.</p>
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormForo()">📢 Quiero publicar un aviso</button>
+    </div>
+    <div id="foroFormWrap" class="oculto">
+      <form id="foroForm" class="foro-form">
+        <input type="text" id="tituloAviso" placeholder="Título del empleo" required>
+        <textarea id="detalleAviso" placeholder="Detalles del puesto y contacto..." required></textarea>
+        <button type="submit" class="btn">Publicar Aviso</button>
+      </form>
+    </div>
+    <div id="listaAvisos"></div>
+  </section>
+
+  <section id="voluntariado">
+    <h2>Sumate como Voluntario</h2>
+    <p>Tu tiempo puede transformar vidas. Inscribite para colaborar en nuestros puntos de donación.</p>
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormVoluntario()">🤝 Quiero ser Voluntario</button>
+    </div>
+    <div id="voluntarioFormWrap" class="oculto">
+      <form id="voluntarioForm">
+        <input type="text" id="nombreVol" placeholder="Nombre completo" required>
+        <input type="email" id="emailVol" placeholder="Tu correo electrónico" required>
+        <button type="submit" class="btn">¡Inscribirme!</button>
+      </form>
+    </div>
+  </section>
 
   <script src="script.js"></script>
 </body>
