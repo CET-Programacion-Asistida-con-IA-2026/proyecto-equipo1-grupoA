@@ -41,8 +41,8 @@ nav .logo {
 
 nav .logo span:first-child { color: #00aae4; font-weight: 800; letter-spacing: -1px; }
 nav .logo span:last-child { color: white; font-weight: 700; margin-left: 8px; }
-nav ul { display: flex; gap: 25px; list-style: none; }
-nav a { color: white; text-decoration: none; font-weight: bold; transition: 0.3s; }
+nav ul { display: flex; gap: 25px; list-style: none; flex-wrap: wrap; }
+nav a { color: white; text-decoration: none; font-weight: bold; transition: 0.3s; font-size: 14px; }
 nav a:hover { color: var(--color-accent-gold); }
 
 .hero-content { max-width: 700px; margin-top: 80px; }
@@ -246,6 +246,7 @@ input:focus, textarea:focus, select:focus { outline: 2px solid var(--color-dark-
   .modal-ia-content { margin: 0.5rem auto; }
   .cv-body-grid { grid-template-columns: 1fr; }
   .cv-sec.full { grid-column: span 1; }
+  .videos-grid { grid-template-columns: 1fr; }
 }
 
 .ia-tools-section {
@@ -495,6 +496,131 @@ input:focus, textarea:focus, select:focus { outline: 2px solid var(--color-dark-
 .det-consejo.rojo { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 
 .det-reiniciar-wrap { display: flex; justify-content: center; margin-top: 1rem; }
+
+.hab-resultado-card { background: white; border-radius: 16px; padding: 1.8rem; margin-top: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.hab-resultado-card h3 { color: var(--color-primary); font-family: 'Syne', sans-serif; margin-bottom: 1rem; }
+
+.hab-habilidad-item {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-dark-blue));
+  color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 0.8rem;
+}
+
+.hab-habilidad-nombre { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem; }
+.hab-habilidad-desc { font-size: 0.85rem; opacity: 0.9; }
+
+.hab-analisis {
+  background: var(--color-bg-light);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.emp-resultado-card { background: white; border-radius: 16px; padding: 1.8rem; margin-top: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; }
+.emp-resultado-card h3 { color: var(--color-primary); font-family: 'Syne', sans-serif; margin-bottom: 1.5rem; }
+
+.emp-score-circle {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-dark-blue));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  color: white;
+  box-shadow: 0 10px 30px rgba(8,32,82,0.2);
+}
+
+.emp-score-value { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; }
+.emp-score-label { font-size: 0.9rem; opacity: 0.9; margin-top: 0.3rem; }
+
+.emp-resumen {
+  background: var(--color-bg-light);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.emp-sugerencias {
+  background: white;
+  border-left: 4px solid var(--color-accent-gold);
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  text-align: left;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.emp-sugerencias p { margin-bottom: 0.5rem; }
+
+.videos-section { background: white; }
+.videos-section h2 { text-align: center; }
+.videos-section p { text-align: center; margin-bottom: 2rem; }
+
+.videos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.video-card {
+  display: block;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.video-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-play {
+  font-size: 3rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: rgba(0,0,0,0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-card:hover .video-play { opacity: 1; }
+
+.video-card h4 {
+  padding: 1rem;
+  color: var(--color-primary);
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  background: white;
+}
 
 @media print {
   body > *:not(.modal-ia-overlay) { display: none !important; }
