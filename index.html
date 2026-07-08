@@ -23,6 +23,7 @@
         <li><a href="#test">Test</a></li>
         <li><a href="#reseñas">Reseñas</a></li>
         <li><a href="#ia-tools">Herramientas IA</a></li>
+        <li><a href="#videos">Tips Entrevistas</a></li>
         <li><a href="#comentarios">Contacto</a></li>
       </ul>
     </nav>
@@ -156,7 +157,7 @@
     <div class="ia-tools-header">
       <span class="ia-badge">✦ Powered by IA</span>
       <h2>Herramientas con Inteligencia Artificial</h2>
-      <p>Tres herramientas gratuitas para potenciar tu búsqueda laboral, creadas especialmente para vos.</p>
+      <p>Cinco herramientas gratuitas para potenciar tu búsqueda laboral, creadas especialmente para vos.</p>
     </div>
     <div class="ia-tools-grid">
       <div class="ia-tool-card" onclick="abrirHerramienta('cv')">
@@ -176,6 +177,18 @@
         <h3>Detector de Ofertas Falsas</h3>
         <p>Pegá una oferta y la IA analiza si tiene señales de estafa. Protegete antes de postularte.</p>
         <span class="ia-tool-btn">Analizar oferta →</span>
+      </div>
+      <div class="ia-tool-card" onclick="abrirHerramienta('habilidades')">
+        <div class="ia-tool-icon">⚡</div>
+        <h3>Detector de Habilidades</h3>
+        <p>Contá qué haces en tu día a día y la IA detecta habilidades ocultas para tu CV.</p>
+        <span class="ia-tool-btn">Descubrir habilidades →</span>
+      </div>
+      <div class="ia-tool-card" onclick="abrirHerramienta('empleabilidad')">
+        <div class="ia-tool-icon">📊</div>
+        <h3>Predictor de Empleabilidad</h3>
+        <p>Analiza tu perfil y predice tus chances de conseguir trabajo según el mercado.</p>
+        <span class="ia-tool-btn">Calcular empleabilidad →</span>
       </div>
     </div>
   </section>
@@ -385,6 +398,134 @@
       </div>
     </div>
   </template>
+
+  <template id="tpl-habilidades">
+    <div class="tool-wrap">
+      <div class="tool-hero">
+        <h2>⚡ Detector de Habilidades Ocultas</h2>
+        <p>Contá qué haces en tu día a día y descubrí habilidades que no sabías que tenías.</p>
+      </div>
+      <div id="habSetup">
+        <div class="field-group">
+          <label>¿Qué haces típicamente en tu día a día?</label>
+          <textarea id="habActividades" rows="6" placeholder="Ej: Cocino para mi familia, organizo las cosas de la casa, ayudo a mis hijos con las tareas, participo en la junta vecinal..."></textarea>
+        </div>
+        <button class="btn btn-full" onclick="habAnalizar()">🔍 Detectar mis habilidades</button>
+      </div>
+      <div class="tool-loading" id="habLoading">
+        <div class="tool-loading-orb"></div>
+        <p>Analizando tus actividades... ⚡</p>
+      </div>
+      <div id="habResultado" class="oculto">
+        <div class="hab-resultado-card">
+          <h3>🌟 Tus Habilidades Detectadas</h3>
+          <div id="habHabilidades"></div>
+          <p id="habAnalisis" class="hab-analisis"></p>
+          <div class="tool-nav tool-nav-center">
+            <button class="btn" onclick="habReiniciar()">🔁 Analizar de nuevo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-empleabilidad">
+    <div class="tool-wrap">
+      <div class="tool-hero">
+        <h2>📊 Predictor de Empleabilidad</h2>
+        <p>Analiza tu perfil y predice tus chances de conseguir trabajo en el mercado actual.</p>
+      </div>
+      <div id="empSetup">
+        <div class="field-group">
+          <label>¿Cuál es tu educación?</label>
+          <select id="empEducacion">
+            <option value="">Seleccioná una opción</option>
+            <option value="sin educación formal">Sin educación formal</option>
+            <option value="primaria completa">Primaria completa</option>
+            <option value="secundaria incompleta">Secundaria incompleta</option>
+            <option value="secundaria completa">Secundaria completa</option>
+            <option value="terciario/universitario incompleto">Terciario/Universitario incompleto</option>
+            <option value="terciario/universitario completo">Terciario/Universitario completo</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>¿Cuántos años de experiencia laboral tenés?</label>
+          <input type="number" id="empExperiencia" placeholder="Ej: 3" min="0" max="50">
+        </div>
+        <div class="field-group">
+          <label>Seleccioná tus habilidades (al menos 3)</label>
+          <div class="chips-grid" id="empChipsGrid">
+            <button type="button" class="chip" data-val="Comunicación">Comunicación</button>
+            <button type="button" class="chip" data-val="Liderazgo">Liderazgo</button>
+            <button type="button" class="chip" data-val="Trabajo en equipo">Trabajo en equipo</button>
+            <button type="button" class="chip" data-val="Resolución de problemas">Resolución de problemas</button>
+            <button type="button" class="chip" data-val="Creatividad">Creatividad</button>
+            <button type="button" class="chip" data-val="Organización">Organización</button>
+            <button type="button" class="chip" data-val="Atención al cliente">Atención al cliente</button>
+            <button type="button" class="chip" data-val="Computación">Computación</button>
+            <button type="button" class="chip" data-val="Inglés">Inglés</button>
+            <button type="button" class="chip" data-val="Ventas">Ventas</button>
+          </div>
+        </div>
+        <button class="btn btn-full" onclick="empPredecir()">📊 Calcular empleabilidad</button>
+      </div>
+      <div class="tool-loading" id="empLoading">
+        <div class="tool-loading-orb"></div>
+        <p>Analizando tu empleabilidad... 📊</p>
+      </div>
+      <div id="empResultado" class="oculto">
+        <div class="emp-resultado-card">
+          <h3>Tu Índice de Empleabilidad</h3>
+          <div class="emp-score-circle">
+            <div class="emp-score-value" id="empScore">0%</div>
+            <div class="emp-score-label">Chances de Empleo</div>
+          </div>
+          <p id="empResumen" class="emp-resumen"></p>
+          <div id="empSugerencias" class="emp-sugerencias"></div>
+          <div class="tool-nav tool-nav-center">
+            <button class="btn" onclick="empReiniciar()">🔁 Calcular de nuevo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <section id="videos" class="videos-section">
+    <h2>💡 Tips para Entrevistas</h2>
+    <p>Mirá estos videos con consejos prácticos para ir mejor preparado a tu entrevista.</p>
+    <div class="videos-grid">
+      <a href="https://youtu.be/enx_eZKckXM?si=JqWop6sn1MmsIvv3" target="_blank" class="video-card">
+        <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/enx_eZKckXM/maxresdefault.jpg');">
+          <div class="video-play">▶️</div>
+        </div>
+        <h4>Cómo dejar una buena primera impresión</h4>
+      </a>
+      <a href="https://youtu.be/QBe8SE3MuQU?si=Ruo4KJORSxSbX3fn" target="_blank" class="video-card">
+        <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/QBe8SE3MuQU/maxresdefault.jpg');">
+          <div class="video-play">▶️</div>
+        </div>
+        <h4>Errores comunes en entrevistas</h4>
+      </a>
+      <a href="https://youtu.be/ECjEjJMvumw?si=CoyuAr3gTMtJl5D1" target="_blank" class="video-card">
+        <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/ECjEjJMvumw/maxresdefault.jpg');">
+          <div class="video-play">▶️</div>
+        </div>
+        <h4>Cómo responder preguntas difíciles</h4>
+      </a>
+      <a href="https://youtu.be/U2lWFRFwZLE?si=CoyuAr3gTMtJl5D1" target="_blank" class="video-card">
+        <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/U2lWFRFwZLE/maxresdefault.jpg');">
+          <div class="video-play">▶️</div>
+        </div>
+        <h4>Lenguaje corporal en entrevistas</h4>
+      </a>
+      <a href="https://youtu.be/O_q0XV28OiU?si=1-rC0nKZW0kqStEP" target="_blank" class="video-card">
+        <div class="video-thumbnail" style="background-image: url('https://img.youtube.com/vi/O_q0XV28OiU/maxresdefault.jpg');">
+          <div class="video-play">▶️</div>
+        </div>
+        <h4>Negociación de sueldo</h4>
+      </a>
+    </div>
+  </section>
 
   <section id="comentarios">
     <h2>Dejanos tu Comentario</h2>
