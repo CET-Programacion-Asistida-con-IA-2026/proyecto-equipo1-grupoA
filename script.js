@@ -1,57 +1,52 @@
-// 🔑 PEGÁ TU API KEY DE GOOGLE GEMINI ACÁ
-// Conseguila en: aistudio.google.com → Get API Key
-const GEMINI_API_KEY = "AQ.Ab8RN6LaKOjx8LgfOuFfjISu4mj2y8xpuXVZwZZmKuGBuxx9Bg"; 
+// 🔑 API KEY DE GOOGLE GEMINI ACÁ
+const GEMINI_API_KEY = "AQ.Ab8RN6LaKOjx8LgfOuFfjISu4mj2y8xpuXVZwZZmKuGBuxx9Bg";
 
 async function llamarIA(prompt) {
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              {
-                text: prompt
-              }
-            ]
-          }
-        ]
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.2,
+          maxOutputTokens: 2048,
+          responseMimeType: "application/json"
+        }
       })
     }
   );
 
   const data = await res.json();
 
-  console.log(data);
-
   if (data.error) {
     throw new Error(data.error.message);
   }
 
-  return data.candidates[0].content.parts[0].text;
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 }
 
-document.getElementById("quizForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const experiencia = document.getElementById("experiencia").value;
-  const discapacidad = document.getElementById("discapacidad").value;
+// Auxiliar para limpiar bloques de código markdown que a veces devuelve la IA
+function limpiarJSON(texto) {
+  texto = texto.replace(/```json|```/g, "").trim();
 
-  document.getElementById("res-sin-si").classList.add("oculto");
-  document.getElementById("res-sin-no").classList.add("oculto");
-  document.getElementById("res-con").classList.add("oculto");
+  const inicioObjeto = texto.indexOf("{");
+  const finObjeto = texto.lastIndexOf("}");
 
-  if (experiencia === "sin" && discapacidad === "si") {
-    document.getElementById("res-sin-si").classList.remove("oculto");
-  } else if (experiencia === "sin" && discapacidad === "no") {
-    document.getElementById("res-sin-no").classList.remove("oculto");
-  } else if (experiencia === "con") {
-    document.getElementById("res-con").classList.remove("oculto");
+  if (inicioObjeto !== -1 && finObjeto !== -1) {
+    return texto.substring(inicioObjeto, finObjeto + 1);
   }
-});
+
+  const inicioArray = texto.indexOf("[");
+  const finArray = texto.lastIndexOf("]");
+
+  if (inicioArray !== -1 && finArray !== -1) {
+    return texto.substring(inicioArray, finArray + 1);
+  }
+
+  return texto;
+}
 
 function toggleFormComentario() {
   document.getElementById("comentarioFormWrap").classList.toggle("oculto");
@@ -165,6 +160,8 @@ function abrirHerramienta(tipo) {
   if (tipo === "cv") initCV();
   if (tipo === "entrevista") initEntrevista();
   if (tipo === "detector") initDetector();
+  if (tipo === "habilidades") initHabilidades();
+  if (tipo === "empleabilidad") initEmpleabilidad();
 }
 
 function cerrarHerramienta() {
@@ -270,14 +267,14 @@ Transformá las actividades cotidianas en competencias laborales reales. Usá le
 
   try {
     const texto = await llamarIA(prompt);
-    const cvData = JSON.parse(texto.replace(/```json|```/g, "").trim());
+    const cvData = JSON.parse(limpiarJSON(texto));
     document.getElementById("cvLoading").style.display = "none";
     cvMostrarResultado(datos, cvData);
   } catch (err) {
     console.error(err);
     document.getElementById("cvLoading").style.display = "none";
     document.getElementById("cvSteps").style.display = "block";
-    document.querySelectorAll(".tool-nav").forEach(n => n.style.flex = "row");
+    document.querySelectorAll(".tool-nav").forEach(n => n.style.display = "flex");
     alert("Hubo un error al generar el CV. Verificá tu API key e intentá de nuevo.");
   }
 }
@@ -364,31 +361,8 @@ Respondé SOLO con un JSON array de strings, sin markdown ni texto extra. Ejempl
 ["¿Por qué te interesa este trabajo?", "Contanos sobre una situación difícil que hayas resuelto..."]`;
 
   try {
- const texto = await llamarIA(prompt);
-
-console.log("Respuesta de Gemini:", texto);
-
-try {
-  const limpio = texto
-    .replace(/```json/g, "")
-    .replace(/```/g, "")
-    .trim();
-
-  const inicio = limpio.indexOf("[");
-  const fin = limpio.lastIndexOf("]");
-
-  if (inicio === -1 || fin === -1) {
-    throw new Error("No se encontró un array JSON válido.");
-  }
-
-  const json = limpio.substring(inicio, fin + 1);
-  entPreguntas = JSON.parse(json);
-
-} catch (e) {
-  console.error("Respuesta recibida:", texto);
-  throw e;
-}
-
+    const texto = await llamarIA(prompt);
+    entPreguntas = JSON.parse(limpiarJSON(texto));
     document.getElementById("entLoading").style.display = "none";
     document.getElementById("entActiva").classList.remove("oculto");
     entMostrarPregunta(0);
@@ -508,11 +482,7 @@ Respondé SOLO con este JSON, sin markdown ni texto extra:
 
   try {
     const texto = await llamarIA(prompt);
-    const regexJSON = /\{[\s\S]*\}/;
-    const coincidencia = texto.match(regexJSON);
-    const jsonFinal = coincidencia ? coincidencia[0] : texto.replace(/```json|```/g, "").trim();
-    
-    const ev = JSON.parse(jsonFinal);
+    const ev = JSON.parse(limpiarJSON(texto));
 
     document.getElementById("entLoading").style.display = "none";
     document.getElementById("entScore").textContent = ev.puntuacion;
@@ -587,11 +557,7 @@ Respondé SOLO con este JSON, sin markdown ni texto extra:
 
   try {
     const texto = await llamarIA(prompt);
-    const regexJSON = /\{[\s\S]*\}/;
-    const coincidencia = texto.match(regexJSON);
-    const jsonFinal = coincidencia ? coincidencia[0] : texto.replace(/```json|```/g, "").trim();
-
-    const resultado = JSON.parse(jsonFinal);
+    const resultado = JSON.parse(limpiarJSON(texto));
     document.getElementById("detLoading").style.display = "none";
     detMostrarResultado(resultado);
   } catch (err) {
@@ -637,3 +603,128 @@ function detMostrarResultado(r) {
 }
 
 function detReiniciar() { abrirHerramienta("detector"); }
+
+function initHabilidades() {}
+
+async function habAnalizar() {
+  const actividades = document.getElementById("habActividades").value.trim();
+  if (!actividades) { alert("Por favor describí tus actividades diarias."); return; }
+
+  document.getElementById("habSetup").style.display = "none";
+  document.getElementById("habLoading").style.display = "block";
+
+  const prompt = `Sos un experto en RRHH en Argentina. Analiza estas actividades cotidianas y detecta habilidades laborales ocultas que la persona puede usar en un CV o para postularse a trabajos.
+
+Actividades descritas:
+"${actividades}"
+
+Respondé SOLO con este JSON, sin markdown ni texto extra:
+{
+  "habilidades": [
+    {"nombre": "Habilidad", "descripcion": "Cómo se evidencia en sus actividades", "puestos": "Puestos donde se valora"}
+  ],
+  "analisis": "2-3 oraciones sobre cómo estas actividades demuestran competencias laborales valiosas"
+}`;
+
+  try {
+    const texto = await llamarIA(prompt);
+    const resultado = JSON.parse(limpiarJSON(texto));
+    document.getElementById("habLoading").style.display = "none";
+    habMostrarResultado(resultado);
+  } catch (err) {
+    console.error(err);
+    document.getElementById("habLoading").style.display = "none";
+    document.getElementById("habSetup").style.display = "block";
+    alert("Error al detectar habilidades. Verificá tu API key e intentá de nuevo.");
+  }
+}
+
+function habMostrarResultado(r) {
+  let habHTML = "";
+  if (r.habilidades?.length) {
+    habHTML = r.habilidades.map(h => `
+      <div class="hab-habilidad-item">
+        <div class="hab-habilidad-nombre">${h.nombre}</div>
+        <div class="hab-habilidad-desc">
+          <strong>Dónde se ve:</strong> ${h.descripcion}<br>
+          <strong>Para puestos:</strong> ${h.puestos}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("habHabilidades").innerHTML = habHTML;
+  document.getElementById("habAnalisis").textContent = r.analisis || "";
+  document.getElementById("habResultado").classList.remove("oculto");
+}
+
+function habReiniciar() { abrirHerramienta("habilidades"); }
+
+function initEmpleabilidad() {
+  let empChipsSeleccionados = new Set();
+  document.querySelectorAll("#empChipsGrid .chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      chip.classList.toggle("selected");
+      const val = chip.dataset.val;
+      empChipsSeleccionados.has(val) ? empChipsSeleccionados.delete(val) : empChipsSeleccionados.add(val);
+    });
+  });
+  window.empChipsSeleccionados = empChipsSeleccionados;
+}
+
+async function empPredecir() {
+  const educacion = document.getElementById("empEducacion").value;
+  const experiencia = document.getElementById("empExperiencia").value;
+  const habilidades = window.empChipsSeleccionados ? [...window.empChipsSeleccionados].join(", ") : "";
+
+  if (!educacion) { alert("Por favor seleccioná tu nivel educativo."); return; }
+  if (experiencia === "") { alert("Por favor indicá tus años de experiencia."); return; }
+
+  document.getElementById("empSetup").style.display = "none";
+  document.getElementById("empLoading").style.display = "block";
+
+  const prompt = `Sos un consultor de inserción laboral en Argentina. Analizá el siguiente perfil y calculá un índice de empleabilidad estimado (un porcentaje del 0 al 100) basado en las demandas actuales del mercado.
+
+Perfil:
+- Nivel educativo: ${educacion}
+- Años de experiencia laboral: ${experiencia} años
+- Habilidades destacadas: ${habilidades || "Ninguna seleccionada"}
+
+Respondé SOLO con este JSON, sin markdown ni texto extra:
+{
+  "score": "porcentaje numérico entre 0 y 100 sin el signo por ciento (ej: 75)",
+  "resumen": "Breve diagnóstico situacional de 2 o 3 oraciones usando español rioplatense.",
+  "sugerencias": [
+    "Recomendación concreta 1",
+    "Recomendación concreta 2",
+    "Recomendación concreta 3"
+  ]
+}`;
+
+  try {
+    const texto = await llamarIA(prompt);
+    const resultado = JSON.parse(limpiarJSON(texto));
+    document.getElementById("empLoading").style.display = "none";
+    empMostrarResultado(resultado);
+  } catch (err) {
+    console.error(err);
+    document.getElementById("empLoading").style.display = "none";
+    document.getElementById("empSetup").style.display = "block";
+    alert("Error al calcular la empleabilidad. Verificá tu API key e intentá de nuevo.");
+  }
+}
+
+function empMostrarResultado(r) {
+  const scoreVal = r.score ? r.score : 0;
+  document.getElementById("empScore").textContent = scoreVal + "%";
+  document.getElementById("empResumen").textContent = r.resumen || "";
+
+  let sugHTML = "";
+  if (r.sugerencias?.length) {
+    sugHTML = r.sugerencias.map(s => `<p>• ${s}</p>`).join("");
+  }
+  document.getElementById("empSugerencias").innerHTML = sugHTML;
+  document.getElementById("empResultado").classList.remove("oculto");
+}
+
+function empReiniciar() { abrirHerramienta("empleabilidad"); }
