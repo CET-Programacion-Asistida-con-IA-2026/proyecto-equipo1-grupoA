@@ -254,6 +254,19 @@ input:focus, textarea:focus, select:focus { outline: 2px solid var(--color-dark-
   .cv-body-grid { grid-template-columns: 1fr; }
   .cv-sec.full { grid-column: span 1; }
   .videos-grid { grid-template-columns: 1fr; }
+
+.trabajos-intro h2,
+.diccionario-intro h2{
+    font-size: 2.2rem;
+}
+
+.texto-intro{
+    font-size: 1.1rem;
+}
+
+.glosario-card{
+    height: 260px;
+    }
 }
 
 .ia-tools-section {
@@ -639,4 +652,138 @@ input:focus, textarea:focus, select:focus { outline: 2px solid var(--color-dark-
   .modal-ia-content { box-shadow: none !important; border-radius: 0 !important; margin: 0 !important; }
   .modal-ia-close, .tool-nav, .tool-hero, .tool-progress-wrap, .tool-step-label { display: none !important; }
   .cv-preview { margin: 0 !important; }
+}
+
+/* ===========================
+   TRABAJOS MÁS BUSCADOS
+=========================== */
+
+.trabajos-populares{
+    padding: 80px 10%;
+    background: #ffffff;
+}
+
+.trabajos-intro{
+    max-width: 950px;
+    margin: 0 auto 50px;
+    text-align: center;
+}
+
+.trabajos-intro h2{
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    color: var(--color-primary);
+    margin-bottom: 25px;
+    text-transform: none;
+    line-height: 1.2;
+}
+
+.texto-intro{
+    font-size: 1.35rem;
+    line-height: 1.9;
+    color: #4b5563;
+}
+
+.texto-intro strong{
+    color: var(--color-primary);
+}
+
+/*=================================================
+            DICCIONARIO LABORAL
+=================================================*/
+
+.diccionario-laboral{
+    padding:90px 10%;
+    background:#fff;
+}
+
+.diccionario-intro{
+    max-width:950px;
+    margin:auto;
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.diccionario-intro h2{
+    font-family:'Syne',sans-serif;
+    font-size:3rem;
+    color:var(--color-primary);
+    margin-bottom:25px;
+    text-transform:none;
+}
+
+.glosario-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+.glosario-card{
+    position:relative;
+    height:240px;
+    perspective:1000px;
+}
+
+.glosario-front,
+.glosario-back{
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:20px;
+    backface-visibility:hidden;
+    transition: transform .7s ease;
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+}
+
+.glosario-front{
+    background:white;
+    border-top:5px solid var(--color-primary);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.glosario-front .emoji{
+    font-size:50px;
+    margin-bottom:18px;
+}
+
+.glosario-front h3{
+    font-family:'Syne',sans-serif;
+    color:var(--color-primary);
+    margin-bottom:15px;
+}
+
+.glosario-front span{
+    color:#6b7280;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.glosario-back{
+    background:linear-gradient(135deg,var(--color-primary),var(--color-dark-blue));
+    color:white;
+    border-top:5px solid var(--color-accent-gold);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:25px;
+    transform:rotateY(180deg);
+    line-height:1.7;
+    font-size:16px;
+}
+
+.glosario-card:hover{
+    transform:translateY(-10px);
+    filter:drop-shadow(0 18px 30px rgba(0,0,0,.15));
+}
+
+.glosario-card:hover .glosario-front{
+    transform:rotateY(180deg);
+}
+
+.glosario-card:hover .glosario-back{
+    transform:rotateY(360deg);
 }
