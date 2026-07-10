@@ -25,6 +25,7 @@
         <li><a href="#reseñas">Reseñas</a></li>
         <li><a href="#ia-tools">Herramientas IA</a></li>
         <li><a href="#videos">Tips Entrevistas</a></li>
+        <li><a href="#panel-ongs">ONGs y Voluntariados</a></li>
         <li><a href="#comentarios">Contacto</a></li>
       </ul>
     </nav>
@@ -39,7 +40,7 @@
       <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="Grupo de personas trabajando en equipo">
     </div>
   </header>
-  
+
   <section class="trabajos-populares" id="proposito">
   <div class="diccionario-intro">
     <h2>Nuestro Propósito</h2>
@@ -95,9 +96,7 @@
     </div>
   </section>
 
-
-
-<section class="trabajos-populares">
+  <section class="trabajos-populares">
 
     <div class="trabajos-intro">
 
@@ -273,6 +272,7 @@
 
 </section>
 
+
   <section id="mapas" class="map-section">
     <h2>Mapa de Ayuda Social</h2>
     <p>Encontrá los puntos de recolección en CABA y GBA para donar libros y útiles escolares.</p>
@@ -306,22 +306,24 @@
         <option value="no">No</option>
       </select>
       <button type="submit" class="btn">Ver Recomendaciones</button>
-      <h3>Te recomendamos:</h3>
-      <div id="res-sin-si" class="grupo-links oculto">
-        <a href="https://www.incluyeme.com" target="_blank">Incluyeme</a><br>
-        <a href="https://www.santanderopenacademy.com" target="_blank">Becas Santander Open Academy</a><br>
-        <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo Argentina</a>
-      </div>
-      <div id="res-sin-no" class="grupo-links oculto">
-        <a href="https://www.linkedin.com" target="_blank">Trabajos trainee en LinkedIn</a><br>
-        <a href="https://www.argentina.gob.ar/progresar" target="_blank">Becas Progresar</a><br>
-        <a href="https://www.santanderopenacademy.com" target="_blank">Cursos gratuitos Santander</a><br>
-        <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo</a>
-      </div>
-      <div id="res-con" class="grupo-links oculto">
-        <a href="https://www.linkedin.com/jobs" target="_blank">LinkedIn Jobs</a><br>
-        <a href="https://www.coursera.org" target="_blank">Cursos de especialización</a><br>
-        <a href="https://www.santanderopenacademy.com" target="_blank">Santander Open Academy</a>
+      <div id="testResultadosWrap" class="test-resultados oculto">
+        <h3>Te recomendamos:</h3>
+        <div id="res-sin-si" class="grupo-links oculto">
+          <a href="https://www.incluyeme.com" target="_blank">Incluyeme</a>
+          <a href="https://www.santanderopenacademy.com" target="_blank">Becas Santander Open Academy</a>
+          <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo Argentina</a>
+        </div>
+        <div id="res-sin-no" class="grupo-links oculto">
+          <a href="https://www.linkedin.com" target="_blank">Trabajos trainee en LinkedIn</a>
+          <a href="https://www.argentina.gob.ar/progresar" target="_blank">Becas Progresar</a>
+          <a href="https://www.santanderopenacademy.com" target="_blank">Cursos gratuitos Santander</a>
+          <a href="https://www.portalempleo.gob.ar" target="_blank">Portal Empleo</a>
+        </div>
+        <div id="res-con" class="grupo-links oculto">
+          <a href="https://www.linkedin.com/jobs" target="_blank">LinkedIn Jobs</a>
+          <a href="https://www.coursera.org" target="_blank">Cursos de especialización</a>
+          <a href="https://www.santanderopenacademy.com" target="_blank">Santander Open Academy</a>
+        </div>
       </div>
     </form>
     <div id="resultadoTest" class="resultado-test"></div>
@@ -354,7 +356,7 @@
     <div class="ia-tools-header">
       <span class="ia-badge">✦ Powered by IA</span>
       <h2>Herramientas con Inteligencia Artificial</h2>
-      <p>Cinco herramientas gratuitas para potenciar tu búsqueda laboral, creadas especialmente para vos.</p>
+      <p>Tres herramientas gratuitas para potenciar tu búsqueda laboral, creadas especialmente para vos.</p>
     </div>
     <div class="ia-tools-grid">
       <div class="ia-tool-card" onclick="abrirHerramienta('cv')">
@@ -376,16 +378,16 @@
         <span class="ia-tool-btn">Analizar oferta →</span>
       </div>
       <div class="ia-tool-card" onclick="abrirHerramienta('habilidades')">
-        <div class="ia-tool-icon">⚡</div>
-        <h3>Detector de Habilidades</h3>
-        <p>Contá qué haces en tu día a día y la IA detecta habilidades ocultas para tu CV.</p>
-        <span class="ia-tool-btn">Descubrir habilidades →</span>
+        <div class="ia-tool-icon">🧩</div>
+        <h3>Detector de Habilidades Ocultas</h3>
+        <p>Contanos qué hacés en tu día a día (cuidar, cocinar, organizar) y la IA lo traduce en habilidades laborales reales.</p>
+        <span class="ia-tool-btn">Descubrir mis habilidades →</span>
       </div>
-      <div class="ia-tool-card" onclick="abrirHerramienta('empleabilidad')">
+      <div class="ia-tool-card" onclick="abrirHerramienta('predictor')">
         <div class="ia-tool-icon">📊</div>
         <h3>Predictor de Empleabilidad</h3>
-        <p>Analiza tu perfil y predice tus chances de conseguir trabajo según el mercado.</p>
-        <span class="ia-tool-btn">Calcular empleabilidad →</span>
+        <p>Con tu perfil, la IA te muestra qué tan cerca estás de distintos trabajos y qué te falta para lograrlo.</p>
+        <span class="ia-tool-btn">Ver mi predicción →</span>
       </div>
     </div>
   </section>
@@ -599,89 +601,66 @@
   <template id="tpl-habilidades">
     <div class="tool-wrap">
       <div class="tool-hero">
-        <h2>⚡ Detector de Habilidades Ocultas</h2>
-        <p>Contá qué haces en tu día a día y descubrí habilidades que no sabías que tenías.</p>
+        <h2>🧩 Detector de Habilidades Ocultas</h2>
+        <p>Contanos qué hacés en tu día a día. La IA lo va a traducir en habilidades laborales concretas y puestos donde podés aplicar.</p>
       </div>
-      <div id="habSetup">
+      <div id="habForm">
         <div class="field-group">
-          <label>¿Qué haces típicamente en tu día a día?</label>
-          <textarea id="habActividades" rows="6" placeholder="Ej: Cocino para mi familia, organizo las cosas de la casa, ayudo a mis hijos con las tareas, participo en la junta vecinal..."></textarea>
+          <label>Describí tus tareas cotidianas (en casa, en la familia, en el barrio, changas, lo que sea)</label>
+          <textarea id="habTexto" rows="6" placeholder="Ej: Cuido a mis hijos, cocino para 10 personas todos los días, organizo el club de barrio, administro las cuentas de mi casa, ayudo a mis vecinos con trámites..."></textarea>
         </div>
-        <button class="btn btn-full" onclick="habAnalizar()">🔍 Detectar mis habilidades</button>
+        <button class="btn btn-full" onclick="habAnalizar()">🧩 Traducir a habilidades laborales</button>
+        <div class="det-ejemplos">
+          <p><strong>¿No sabés por dónde arrancar?</strong> Probá con este ejemplo:</p>
+          <button type="button" class="chip" onclick="habCargarEjemplo()">Cargar ejemplo</button>
+        </div>
       </div>
       <div class="tool-loading" id="habLoading">
         <div class="tool-loading-orb"></div>
-        <p>Analizando tus actividades... ⚡</p>
+        <p>Analizando tus habilidades... 🧠</p>
       </div>
       <div id="habResultado" class="oculto">
         <div class="hab-resultado-card">
-          <h3>🌟 Tus Habilidades Detectadas</h3>
-          <div id="habHabilidades"></div>
-          <p id="habAnalisis" class="hab-analisis"></p>
-          <div class="tool-nav tool-nav-center">
-            <button class="btn" onclick="habReiniciar()">🔁 Analizar de nuevo</button>
-          </div>
+          <h3>💪 Tus habilidades laborales</h3>
+          <div class="cv-tags-wrap" id="habHabilidadesTags"></div>
+          <h3>🎯 Puestos donde podés aplicar</h3>
+          <div id="habPuestos"></div>
+          <h3>✍️ Cómo ponerlo en tu CV</h3>
+          <div id="habFrasesCV"></div>
+        </div>
+        <div class="det-reiniciar-wrap">
+          <button class="btn" onclick="habUsarEnCV()">📄 Usar esto en mi CV</button>
+          <button class="btn tool-btn-secondary" onclick="habReiniciar()">🔁 Probar otra vez</button>
         </div>
       </div>
     </div>
   </template>
 
-  <template id="tpl-empleabilidad">
+  <template id="tpl-predictor">
     <div class="tool-wrap">
       <div class="tool-hero">
         <h2>📊 Predictor de Empleabilidad</h2>
-        <p>Analiza tu perfil y predice tus chances de conseguir trabajo en el mercado actual.</p>
+        <p>Con los datos de tu perfil, la IA estima qué tan cerca estás de conseguir distintos tipos de trabajo y qué te falta.</p>
       </div>
-      <div id="empSetup">
-        <div class="field-group">
-          <label>¿Cuál es tu educación?</label>
-          <select id="empEducacion">
-            <option value="">Seleccioná una opción</option>
-            <option value="sin educación formal">Sin educación formal</option>
-            <option value="primaria completa">Primaria completa</option>
-            <option value="secundaria incompleta">Secundaria incompleta</option>
-            <option value="secundaria completa">Secundaria completa</option>
-            <option value="terciario/universitario incompleto">Terciario/Universitario incompleto</option>
-            <option value="terciario/universitario completo">Terciario/Universitario completo</option>
-          </select>
+      <div id="predForm">
+        <div id="predSinPerfil" class="oculto">
+          <p style="margin-bottom:1rem;color:#6b7280;font-size:0.9rem;">Todavía no generaste tu CV con nosotros. Contanos un poco para poder calcular tu predicción (o <a href="#" onclick="abrirHerramienta('cv');return false;">generá tu CV primero</a> para un resultado más preciso).</p>
+          <div class="field-group"><label>¿A qué puesto te gustaría aplicar?</label><input type="text" id="predPuesto" placeholder="Ej: Administrativa, Vendedora, Operaria..."></div>
+          <div class="field-group"><label>Contanos tu experiencia y habilidades</label><textarea id="predExperiencia" rows="4" placeholder="Ej: Cocino para mi familia, cuidé a mis abuelos, terminé la secundaria..."></textarea></div>
         </div>
-        <div class="field-group">
-          <label>¿Cuántos años de experiencia laboral tenés?</label>
-          <input type="number" id="empExperiencia" placeholder="Ej: 3" min="0" max="50">
+        <div id="predConPerfil" class="oculto">
+          <p style="margin-bottom:1rem;color:#059669;font-size:0.9rem;">✅ Vamos a usar el perfil que ya generaste en el CV.</p>
         </div>
-        <div class="field-group">
-          <label>Seleccioná tus habilidades (al menos 3)</label>
-          <div class="chips-grid" id="empChipsGrid">
-            <button type="button" class="chip" data-val="Comunicación">Comunicación</button>
-            <button type="button" class="chip" data-val="Liderazgo">Liderazgo</button>
-            <button type="button" class="chip" data-val="Trabajo en equipo">Trabajo en equipo</button>
-            <button type="button" class="chip" data-val="Resolución de problemas">Resolución de problemas</button>
-            <button type="button" class="chip" data-val="Creatividad">Creatividad</button>
-            <button type="button" class="chip" data-val="Organización">Organización</button>
-            <button type="button" class="chip" data-val="Atención al cliente">Atención al cliente</button>
-            <button type="button" class="chip" data-val="Computación">Computación</button>
-            <button type="button" class="chip" data-val="Inglés">Inglés</button>
-            <button type="button" class="chip" data-val="Ventas">Ventas</button>
-          </div>
-        </div>
-        <button class="btn btn-full" onclick="empPredecir()">📊 Calcular empleabilidad</button>
+        <button class="btn btn-full" onclick="predictorAnalizar()">📊 Calcular mi empleabilidad</button>
       </div>
-      <div class="tool-loading" id="empLoading">
+      <div class="tool-loading" id="predLoading">
         <div class="tool-loading-orb"></div>
-        <p>Analizando tu empleabilidad... 📊</p>
+        <p>Calculando tu empleabilidad... 📈</p>
       </div>
-      <div id="empResultado" class="oculto">
-        <div class="emp-resultado-card">
-          <h3>Tu Índice de Empleabilidad</h3>
-          <div class="emp-score-circle">
-            <div class="emp-score-value" id="empScore">0%</div>
-            <div class="emp-score-label">Chances de Empleo</div>
-          </div>
-          <p id="empResumen" class="emp-resumen"></p>
-          <div id="empSugerencias" class="emp-sugerencias"></div>
-          <div class="tool-nav tool-nav-center">
-            <button class="btn" onclick="empReiniciar()">🔁 Calcular de nuevo</button>
-          </div>
+      <div id="predResultado" class="oculto">
+        <div id="predLista"></div>
+        <div class="det-reiniciar-wrap">
+          <button class="btn tool-btn-secondary" onclick="predictorReiniciar()">🔁 Calcular de nuevo</button>
         </div>
       </div>
     </div>
@@ -724,6 +703,108 @@
     </div>
   </section>
 
+  <section id="panel-ongs" class="panel-ongs-section">
+    <h2>Panel de ONGs y Voluntariados</h2>
+    <p>Organizaciones reales pueden publicar oportunidades de voluntariado, ver su alcance y el interés que generan. Quien quiera postularse es dirigido directamente al canal oficial de cada organización.</p>
+
+    <div class="ong-tabs">
+      <button class="ong-tab-btn active" data-tab="publicas" onclick="ongCambiarTab('publicas')">🌎 Voluntariados Disponibles</button>
+      <button class="ong-tab-btn" data-tab="publicar" onclick="ongCambiarTab('publicar')">📢 Soy una ONG, quiero publicar</button>
+      <button class="ong-tab-btn" data-tab="panel" onclick="ongCambiarTab('panel')">📊 Panel de mi Organización</button>
+    </div>
+
+    <div id="ongTabPublicas" class="ong-tab-content">
+      <div id="ongListaPublica"></div>
+    </div>
+
+    <div id="ongTabPublicar" class="ong-tab-content oculto">
+      <div class="review-form-container">
+        <h3>Publicá tu oportunidad de voluntariado</h3>
+        <form id="ongPublicarForm">
+          <input type="text" id="ongNombre" placeholder="Nombre de tu organización (ONG)" required>
+          <input type="text" id="ongTitulo" placeholder="Título de la oportunidad (Ej: Voluntario/a para comedor comunitario)" required>
+          <input type="text" id="ongUbicacion" placeholder="Ubicación (Ej: Quilmes, Buenos Aires)" required>
+          <input type="number" id="ongVacantes" placeholder="Cantidad de vacantes" min="1" value="1" required>
+          <textarea id="ongDescripcion" placeholder="Contanos de qué se trata, requisitos y cómo contactarlos..." required></textarea>
+          <input type="url" id="ongEnlace" placeholder="Link oficial donde la gente puede postularse (tu web, formulario, red social oficial)" required>
+          <p style="font-size:0.8rem;color:#6b7280;margin-top:-0.5rem;margin-bottom:1rem;">Al hacer clic en "Postularme", quien te vea será redirigido/a directamente a este link para anotarse.</p>
+          <button type="submit" class="btn">Publicar Voluntariado</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="ongTabPanel" class="ong-tab-content oculto">
+      <div class="ong-panel-selector">
+        <label for="ongSelectPropia">Seleccioná tu organización para ver sus métricas</label>
+        <select id="ongSelectPropia" onchange="ongRenderPanel()">
+          <option value="">Seleccioná tu ONG...</option>
+        </select>
+      </div>
+      <div id="ongPanelMetricas"></div>
+    </div>
+  </section>
+
+  <section id="comentarios">
+    <h2>Dejanos tu Comentario</h2>
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormComentario()">💬 Dejar un comentario</button>
+    </div>
+    <div id="comentarioFormWrap" class="oculto">
+      <form id="comentarioForm">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" placeholder="Tu nombre" required>
+        <label for="comentario">Comentario</label>
+        <textarea id="comentario" placeholder="Escribí tu mensaje acá..." required></textarea>
+        <button type="submit" class="btn">Enviar Comentario</button>
+      </form>
+    </div>
+    <div id="comentariosLista"></div>
+  </section>
+
+  <section id="foro-empleo">
+    <h2>Foro de Empleos</h2>
+    <p>Compartí o buscá oportunidades laborales publicadas por la comunidad.</p>
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormForo()">📢 Quiero publicar un aviso</button>
+    </div>
+    <div id="foroFormWrap" class="oculto">
+      <form id="foroForm" class="foro-form">
+        <input type="text" id="tituloAviso" placeholder="Título del empleo" required>
+        <textarea id="detalleAviso" placeholder="Detalles del puesto y contacto..." required></textarea>
+        <button type="submit" class="btn">Publicar Aviso</button>
+      </form>
+    </div>
+    <div id="listaAvisos"></div>
+  </section>
+
+  <section id="voluntariado">
+    <h2>Sumate como Voluntario</h2>
+    <p>Tu tiempo puede transformar vidas. Inscribite para colaborar en nuestros puntos de donación.</p>
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormVoluntario()">🤝 Quiero ser Voluntario</button>
+    </div>
+    <div id="voluntarioFormWrap" class="oculto">
+      <form id="voluntarioForm">
+        <input type="text" id="nombreVol" placeholder="Nombre completo" required>
+        <input type="email" id="emailVol" placeholder="Tu correo electrónico" required>
+        <button type="submit" class="btn">¡Inscribirme!</button>
+      </form>
+    </div>
+  </section>
+
+  <div class="mision-widget" id="misionWidget">
+    <button class="mision-widget-toggle" id="misionToggle" onclick="misionToggleWidget()">🏆</button>
+    <div class="mision-widget-panel oculto" id="misionPanel">
+      <h4>🏆 Misión de esta semana</h4>
+      <ul class="mision-lista">
+        <li id="misionItemPerfil"><span class="mision-check">⬜</span> Completá tu perfil (generá tu CV)</li>
+        <li id="misionItemPostulo"><span class="mision-check">⬜</span> Postulate a 1 oportunidad</li>
+      </ul>
+      <p class="mision-estado" id="misionEstadoTexto">¡Vamos que se puede! 💪</p>
+      <button type="button" class="mision-reset-btn" onclick="resetMisionSemana()">🔄 Reiniciar misión (prueba)</button>
+    </div>
+  </div>
+  <div id="confettiContainer" class="confetti-container"></div>
 
   <script src="script.js"></script>
 </body>
