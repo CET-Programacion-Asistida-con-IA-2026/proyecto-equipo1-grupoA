@@ -1,52 +1,61 @@
-// 🔑 API KEY DE GOOGLE GEMINI ACÁ
-const GEMINI_API_KEY = "AQ.Ab8RN6LaKOjx8LgfOuFfjISu4mj2y8xpuXVZwZZmKuGBuxx9Bg";
+// 🔑 PEGÁ TU API KEY DE GOOGLE GEMINI ACÁ
+// Conseguila en: aistudio.google.com → Get API Key
+const GEMINI_API_KEY = "AQ.Ab8RN6LaKOjx8LgfOuFfjISu4mj2y8xpuXVZwZZmKuGBuxx9Bg"; 
 
 async function llamarIA(prompt) {
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.2,
-          maxOutputTokens: 2048,
-          responseMimeType: "application/json"
-        }
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt
+              }
+            ]
+          }
+        ]
       })
     }
   );
 
   const data = await res.json();
 
+  console.log(data);
+
   if (data.error) {
     throw new Error(data.error.message);
   }
 
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  return data.candidates[0].content.parts[0].text;
 }
 
-// Auxiliar para limpiar bloques de código markdown que a veces devuelve la IA
-function limpiarJSON(texto) {
-  texto = texto.replace(/```json|```/g, "").trim();
+document.getElementById("quizForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const experiencia = document.getElementById("experiencia").value;
+  const discapacidad = document.getElementById("discapacidad").value;
 
-  const inicioObjeto = texto.indexOf("{");
-  const finObjeto = texto.lastIndexOf("}");
+  document.getElementById("res-sin-si").classList.add("oculto");
+  document.getElementById("res-sin-no").classList.add("oculto");
+  document.getElementById("res-con").classList.add("oculto");
 
-  if (inicioObjeto !== -1 && finObjeto !== -1) {
-    return texto.substring(inicioObjeto, finObjeto + 1);
+  if (experiencia === "sin" && discapacidad === "si") {
+    document.getElementById("res-sin-si").classList.remove("oculto");
+  } else if (experiencia === "sin" && discapacidad === "no") {
+    document.getElementById("res-sin-no").classList.remove("oculto");
+  } else if (experiencia === "con") {
+    document.getElementById("res-con").classList.remove("oculto");
   }
 
-  const inicioArray = texto.indexOf("[");
-  const finArray = texto.lastIndexOf("]");
-
-  if (inicioArray !== -1 && finArray !== -1) {
-    return texto.substring(inicioArray, finArray + 1);
-  }
-
-  return texto;
-}
+  const wrap = document.getElementById("testResultadosWrap");
+  wrap.classList.remove("oculto");
+  wrap.scrollIntoView?.({ behavior: "smooth", block: "nearest" });
+});
 
 function toggleFormComentario() {
   document.getElementById("comentarioFormWrap").classList.toggle("oculto");
@@ -142,6 +151,7 @@ document.getElementById("voluntarioForm").addEventListener("submit", (e) => {
   const nombre = document.getElementById("nombreVol").value;
   alert("¡Gracias por sumarte, " + nombre + "! Nos pondremos en contacto pronto.");
   e.target.reset();
+  marcarMision("postulo");
 });
 
 function toggleFormVoluntario() {
@@ -161,7 +171,7 @@ function abrirHerramienta(tipo) {
   if (tipo === "entrevista") initEntrevista();
   if (tipo === "detector") initDetector();
   if (tipo === "habilidades") initHabilidades();
-  if (tipo === "empleabilidad") initEmpleabilidad();
+  if (tipo === "predictor") initPredictor();
 }
 
 function cerrarHerramienta() {
@@ -267,14 +277,16 @@ Transformá las actividades cotidianas en competencias laborales reales. Usá le
 
   try {
     const texto = await llamarIA(prompt);
-    const cvData = JSON.parse(limpiarJSON(texto));
+    const cvData = JSON.parse(texto.replace(/```json|```/g, "").trim());
     document.getElementById("cvLoading").style.display = "none";
     cvMostrarResultado(datos, cvData);
+    guardarPerfil(datos, cvData);
+    marcarMision("perfil");
   } catch (err) {
     console.error(err);
     document.getElementById("cvLoading").style.display = "none";
     document.getElementById("cvSteps").style.display = "block";
-    document.querySelectorAll(".tool-nav").forEach(n => n.style.display = "flex");
+    document.querySelectorAll(".tool-nav").forEach(n => n.style.flex = "row");
     alert("Hubo un error al generar el CV. Verificá tu API key e intentá de nuevo.");
   }
 }
@@ -361,8 +373,31 @@ Respondé SOLO con un JSON array de strings, sin markdown ni texto extra. Ejempl
 ["¿Por qué te interesa este trabajo?", "Contanos sobre una situación difícil que hayas resuelto..."]`;
 
   try {
-    const texto = await llamarIA(prompt);
-    entPreguntas = JSON.parse(limpiarJSON(texto));
+ const texto = await llamarIA(prompt);
+
+console.log("Respuesta de Gemini:", texto);
+
+try {
+  const limpio = texto
+    .replace(/```json/g, "")
+    .replace(/```/g, "")
+    .trim();
+
+  const inicio = limpio.indexOf("[");
+  const fin = limpio.lastIndexOf("]");
+
+  if (inicio === -1 || fin === -1) {
+    throw new Error("No se encontró un array JSON válido.");
+  }
+
+  const json = limpio.substring(inicio, fin + 1);
+  entPreguntas = JSON.parse(json);
+
+} catch (e) {
+  console.error("Respuesta recibida:", texto);
+  throw e;
+}
+
     document.getElementById("entLoading").style.display = "none";
     document.getElementById("entActiva").classList.remove("oculto");
     entMostrarPregunta(0);
@@ -482,7 +517,11 @@ Respondé SOLO con este JSON, sin markdown ni texto extra:
 
   try {
     const texto = await llamarIA(prompt);
-    const ev = JSON.parse(limpiarJSON(texto));
+    const regexJSON = /\{[\s\S]*\}/;
+    const coincidencia = texto.match(regexJSON);
+    const jsonFinal = coincidencia ? coincidencia[0] : texto.replace(/```json|```/g, "").trim();
+    
+    const ev = JSON.parse(jsonFinal);
 
     document.getElementById("entLoading").style.display = "none";
     document.getElementById("entScore").textContent = ev.puntuacion;
@@ -557,7 +596,11 @@ Respondé SOLO con este JSON, sin markdown ni texto extra:
 
   try {
     const texto = await llamarIA(prompt);
-    const resultado = JSON.parse(limpiarJSON(texto));
+    const regexJSON = /\{[\s\S]*\}/;
+    const coincidencia = texto.match(regexJSON);
+    const jsonFinal = coincidencia ? coincidencia[0] : texto.replace(/```json|```/g, "").trim();
+
+    const resultado = JSON.parse(jsonFinal);
     document.getElementById("detLoading").style.display = "none";
     detMostrarResultado(resultado);
   } catch (err) {
@@ -604,127 +647,587 @@ function detMostrarResultado(r) {
 
 function detReiniciar() { abrirHerramienta("detector"); }
 
+/* =========================================================
+   PERFIL (compartido entre CV, Predictor y Misiones)
+========================================================= */
+function guardarPerfil(datos, cvData) {
+  const perfil = {
+    nombre: datos.nombre,
+    email: datos.email,
+    puesto: datos.puesto,
+    experiencia: datos.experiencia,
+    educacion: datos.educacion,
+    cursos: datos.cursos,
+    habilidades: [...new Set([...(cvData.habilidades || []), ...datos.habilidades.split(",").map(h => h.trim()).filter(Boolean)])],
+    idiomas: datos.idiomas,
+    disponibilidad: datos.disponibilidad,
+    objetivo: datos.objetivo
+  };
+  localStorage.setItem("suma_perfil", JSON.stringify(perfil));
+}
+
+function obtenerPerfil() {
+  try {
+    return JSON.parse(localStorage.getItem("suma_perfil"));
+  } catch (e) {
+    return null;
+  }
+}
+
+/* =========================================================
+   DETECTOR DE HABILIDADES OCULTAS
+========================================================= */
 function initHabilidades() {}
 
-async function habAnalizar() {
-  const actividades = document.getElementById("habActividades").value.trim();
-  if (!actividades) { alert("Por favor describí tus actividades diarias."); return; }
+function habCargarEjemplo() {
+  document.getElementById("habTexto").value =
+    "Cuido a mis dos hijos todos los días, cocino para toda la familia (a veces para 10 personas cuando vienen mis suegros), organizo las reuniones del club de barrio, llevo las cuentas de la casa y ayudo a mis vecinas mayores con trámites del banco y turnos médicos.";
+}
 
-  document.getElementById("habSetup").style.display = "none";
+async function habAnalizar() {
+  const texto = document.getElementById("habTexto").value.trim();
+  if (!texto) { alert("Por favor contanos un poco sobre tu día a día."); return; }
+
+  document.getElementById("habForm").style.display = "none";
   document.getElementById("habLoading").style.display = "block";
 
-  const prompt = `Sos un experto en RRHH en Argentina. Analiza estas actividades cotidianas y detecta habilidades laborales ocultas que la persona puede usar en un CV o para postularse a trabajos.
+  const prompt = `Sos un especialista en recursos humanos en Argentina, experto en detectar habilidades transferibles en personas sin experiencia laboral formal (amas de casa, cuidadoras, vecinas activas, etc).
 
-Actividades descritas:
-"${actividades}"
+La persona describió así su día a día:
+"${texto}"
+
+Traducí esas tareas cotidianas en habilidades laborales reales y concretas, y sugerí puestos de trabajo donde esas habilidades sirven.
 
 Respondé SOLO con este JSON, sin markdown ni texto extra:
 {
-  "habilidades": [
-    {"nombre": "Habilidad", "descripcion": "Cómo se evidencia en sus actividades", "puestos": "Puestos donde se valora"}
+  "habilidades": ["habilidad laboral 1", "habilidad laboral 2", "..."],
+  "puestos": [
+    {"puesto": "nombre del puesto", "porque": "1 oración explicando por qué esa persona serviría para ese puesto según lo que contó"}
   ],
-  "analisis": "2-3 oraciones sobre cómo estas actividades demuestran competencias laborales valiosas"
-}`;
+  "frases_cv": ["frase profesional lista para copiar en un CV, basada en una tarea cotidiana mencionada", "otra frase"]
+}
+
+Usá español rioplatense, tono cercano y profesional. Generá entre 5 y 8 habilidades, entre 3 y 5 puestos, y entre 3 y 4 frases para CV.`;
 
   try {
-    const texto = await llamarIA(prompt);
-    const resultado = JSON.parse(limpiarJSON(texto));
+    const texto2 = await llamarIA(prompt);
+    const regexJSON = /\{[\s\S]*\}/;
+    const coincidencia = texto2.match(regexJSON);
+    const jsonFinal = coincidencia ? coincidencia[0] : texto2.replace(/```json|```/g, "").trim();
+    const resultado = JSON.parse(jsonFinal);
     document.getElementById("habLoading").style.display = "none";
     habMostrarResultado(resultado);
   } catch (err) {
     console.error(err);
     document.getElementById("habLoading").style.display = "none";
-    document.getElementById("habSetup").style.display = "block";
-    alert("Error al detectar habilidades. Verificá tu API key e intentá de nuevo.");
+    document.getElementById("habForm").style.display = "block";
+    alert("Hubo un error al analizar tus habilidades. Verificá tu API key e intentá de nuevo.");
   }
 }
 
+let habUltimoResultado = null;
+
 function habMostrarResultado(r) {
-  let habHTML = "";
-  if (r.habilidades?.length) {
-    habHTML = r.habilidades.map(h => `
-      <div class="hab-habilidad-item">
-        <div class="hab-habilidad-nombre">${h.nombre}</div>
-        <div class="hab-habilidad-desc">
-          <strong>Dónde se ve:</strong> ${h.descripcion}<br>
-          <strong>Para puestos:</strong> ${h.puestos}
-        </div>
+  habUltimoResultado = r;
+
+  document.getElementById("habHabilidadesTags").innerHTML =
+    (r.habilidades || []).map(h => `<span class="cv-tag">${h}</span>`).join("");
+
+  document.getElementById("habPuestos").innerHTML =
+    (r.puestos || []).map(p => `
+      <div class="hab-puesto-item">
+        <strong>${p.puesto}</strong>
+        <p>${p.porque}</p>
       </div>
     `).join("");
-  }
 
-  document.getElementById("habHabilidades").innerHTML = habHTML;
-  document.getElementById("habAnalisis").textContent = r.analisis || "";
+  document.getElementById("habFrasesCV").innerHTML =
+    (r.frases_cv || []).map(f => `<div class="hab-frase-item">"${f}"</div>`).join("");
+
   document.getElementById("habResultado").classList.remove("oculto");
+}
+
+function habUsarEnCV() {
+  cerrarHerramienta();
+  abrirHerramienta("cv");
+  if (habUltimoResultado?.habilidades?.length) {
+    setTimeout(() => {
+      document.getElementById("cvHabilidadesExtra").value = habUltimoResultado.habilidades.join(", ");
+    }, 100);
+  }
 }
 
 function habReiniciar() { abrirHerramienta("habilidades"); }
 
-function initEmpleabilidad() {
-  let empChipsSeleccionados = new Set();
-  document.querySelectorAll("#empChipsGrid .chip").forEach(chip => {
-    chip.addEventListener("click", () => {
-      chip.classList.toggle("selected");
-      const val = chip.dataset.val;
-      empChipsSeleccionados.has(val) ? empChipsSeleccionados.delete(val) : empChipsSeleccionados.add(val);
-    });
-  });
-  window.empChipsSeleccionados = empChipsSeleccionados;
+/* =========================================================
+   PANEL DE ONGs Y VOLUNTARIADOS
+========================================================= */
+// Todo vive en localStorage (el navegador de cada persona), así que carga
+// siempre al instante, sin depender de ningún servidor externo.
+const ONG_STORAGE_KEY = "suma_oportunidades_v2";
+
+function ongObtenerOportunidades() {
+  try {
+    return JSON.parse(localStorage.getItem(ONG_STORAGE_KEY)) || [];
+  } catch (e) {
+    return [];
+  }
 }
 
-async function empPredecir() {
-  const educacion = document.getElementById("empEducacion").value;
-  const experiencia = document.getElementById("empExperiencia").value;
-  const habilidades = window.empChipsSeleccionados ? [...window.empChipsSeleccionados].join(", ") : "";
+function ongGuardarOportunidades(lista) {
+  try {
+    localStorage.setItem(ONG_STORAGE_KEY, JSON.stringify(lista));
+  } catch (e) {
+    console.error("No se pudo guardar la oportunidad:", e);
+  }
+}
 
-  if (!educacion) { alert("Por favor seleccioná tu nivel educativo."); return; }
-  if (experiencia === "") { alert("Por favor indicá tus años de experiencia."); return; }
+// Datos de ejemplo, solo se cargan la primera vez (para que el panel no se vea vacío)
+if (!localStorage.getItem(ONG_STORAGE_KEY)) {
+  ongGuardarOportunidades([
+    {
+      id: "demo1",
+      ong: "TECHO Argentina",
+      titulo: "Voluntariado en asentamientos populares",
+      ubicacion: "Todo el país",
+      vacantes: 10,
+      descripcion: "Sumate a las actividades de fin de semana en barrios populares: construcción de viviendas de emergencia, apoyo escolar y trabajo comunitario junto a las familias.",
+      enlace: "https://argentina.techo.org/voluntariado/",
+      vistas: 0,
+      clics: 0,
+      fecha: new Date().toISOString()
+    },
+    {
+      id: "demo2",
+      ong: "Cruz Roja Argentina",
+      titulo: "Voluntariado en tu filial local",
+      ubicacion: "Filiales en todo el país",
+      vacantes: 15,
+      descripcion: "Participá en actividades de gestión del riesgo, promoción de la salud y primeros auxilios. Mayores de 16 años, no se requiere experiencia previa.",
+      enlace: "https://www.cruzroja.org.ar/voluntariado/",
+      vistas: 0,
+      clics: 0,
+      fecha: new Date().toISOString()
+    },
+    {
+      id: "demo3",
+      ong: "Cáritas Argentina",
+      titulo: "Voluntariado parroquial y comunitario",
+      ubicacion: "Más de 3.500 parroquias en el país",
+      vacantes: 20,
+      descripcion: "Sumate a un equipo local para acompañar a personas y familias en situación de vulnerabilidad. No se necesita experiencia previa.",
+      enlace: "https://caritas.org.ar/voluntariado/",
+      vistas: 0,
+      clics: 0,
+      fecha: new Date().toISOString()
+    }
+  ]);
+}
 
-  document.getElementById("empSetup").style.display = "none";
-  document.getElementById("empLoading").style.display = "block";
+function ongCambiarTab(tab) {
+  document.querySelectorAll(".ong-tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.getElementById("ongTabPublicas").classList.toggle("oculto", tab !== "publicas");
+  document.getElementById("ongTabPublicar").classList.toggle("oculto", tab !== "publicar");
+  document.getElementById("ongTabPanel").classList.toggle("oculto", tab !== "panel");
 
-  const prompt = `Sos un consultor de inserción laboral en Argentina. Analizá el siguiente perfil y calculá un índice de empleabilidad estimado (un porcentaje del 0 al 100) basado en las demandas actuales del mercado.
+  if (tab === "publicas") ongRenderListaPublica();
+  if (tab === "panel") ongPoblarSelector();
+}
+
+function ongRenderListaPublica() {
+  const lista = ongObtenerOportunidades();
+  // Simula "alcance": cada vez que se muestra la lista, suman vistas (métrica de impresiones)
+  lista.forEach(o => o.vistas = (o.vistas || 0) + 1);
+  ongGuardarOportunidades(lista);
+
+  const cont = document.getElementById("ongListaPublica");
+  if (!lista.length) {
+    cont.innerHTML = "<p>Todavía no hay voluntariados publicados. ¡Sé la primera organización en sumar una oportunidad!</p>";
+    return;
+  }
+
+  cont.innerHTML = lista.map(o => `
+    <div class="ong-oportunidad-card">
+      <div class="ong-oportunidad-header">
+        <div>
+          <h4>${o.titulo}</h4>
+          <div class="ong-oportunidad-meta">${o.ong} · ${o.ubicacion}</div>
+        </div>
+      </div>
+      <p>${o.descripcion}</p>
+      <div class="ong-oportunidad-footer">
+        <span class="ong-vistas">👁 ${o.vistas} vistas · ${o.clics || 0} interesados · ${o.vacantes} vacante(s)</span>
+        <button class="btn" onclick="ongIrAPostular('${o.id}')">🤝 Postularme</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function ongIrAPostular(id) {
+  const lista = ongObtenerOportunidades();
+  const oportunidad = lista.find(o => o.id === id);
+  if (!oportunidad) return;
+
+  if (!oportunidad.enlace) {
+    alert("Esta organización todavía no cargó un link oficial de postulación.");
+    return;
+  }
+
+  window.open(oportunidad.enlace, "_blank", "noopener,noreferrer");
+  marcarMision("postulo");
+
+  oportunidad.clics = (oportunidad.clics || 0) + 1;
+  ongGuardarOportunidades(lista);
+  ongRenderListaPublica();
+}
+
+document.getElementById("ongPublicarForm")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const nueva = {
+    id: "ong_" + Date.now(),
+    ong: document.getElementById("ongNombre").value.trim(),
+    titulo: document.getElementById("ongTitulo").value.trim(),
+    ubicacion: document.getElementById("ongUbicacion").value.trim(),
+    vacantes: parseInt(document.getElementById("ongVacantes").value) || 1,
+    descripcion: document.getElementById("ongDescripcion").value.trim(),
+    enlace: document.getElementById("ongEnlace").value.trim(),
+    vistas: 0,
+    clics: 0,
+    fecha: new Date().toISOString()
+  };
+  const lista = ongObtenerOportunidades();
+  lista.unshift(nueva);
+  ongGuardarOportunidades(lista);
+  e.target.reset();
+  alert("¡Tu oportunidad de voluntariado fue publicada con éxito!");
+  ongCambiarTab("publicas");
+});
+
+function ongPoblarSelector() {
+  const lista = ongObtenerOportunidades();
+  const nombres = [...new Set(lista.map(o => o.ong))];
+  const select = document.getElementById("ongSelectPropia");
+  const seleccionActual = select.value;
+  select.innerHTML = `<option value="">Seleccioná tu ONG...</option>` +
+    nombres.map(n => `<option value="${n}">${n}</option>`).join("");
+  if (nombres.includes(seleccionActual)) select.value = seleccionActual;
+  ongRenderPanel();
+}
+
+function ongRenderPanel() {
+  const nombreOng = document.getElementById("ongSelectPropia").value;
+  const cont = document.getElementById("ongPanelMetricas");
+  if (!nombreOng) { cont.innerHTML = ""; return; }
+
+  const lista = ongObtenerOportunidades().filter(o => o.ong === nombreOng);
+  const totalVistas = lista.reduce((acc, o) => acc + (o.vistas || 0), 0);
+  const totalClics = lista.reduce((acc, o) => acc + (o.clics || 0), 0);
+
+  cont.innerHTML = `
+    <div class="ong-metricas-resumen">
+      <div class="ong-metrica-box"><div class="num">${lista.length}</div><div class="label">Oportunidades</div></div>
+      <div class="ong-metrica-box"><div class="num">${totalVistas}</div><div class="label">Alcance (vistas)</div></div>
+      <div class="ong-metrica-box"><div class="num">${totalClics}</div><div class="label">Clics en Postularme</div></div>
+    </div>
+    ${lista.map(o => `
+      <div class="ong-oportunidad-card">
+        <div class="ong-oportunidad-header">
+          <div>
+            <h4>${o.titulo}</h4>
+            <div class="ong-oportunidad-meta">${o.ubicacion} · ${o.vacantes} vacante(s)</div>
+          </div>
+          <span class="ong-vistas">👁 ${o.vistas} vistas · 🤝 ${o.clics || 0} clics</span>
+        </div>
+        <p style="font-size:0.85rem;color:#6b7280;">Link oficial de postulación: <a href="${o.enlace}" target="_blank">${o.enlace}</a></p>
+      </div>
+    `).join("")}
+  `;
+}
+
+// Renderiza la lista pública apenas carga la página, ya que el tab "publicas" está activo por defecto
+if (document.getElementById("ongListaPublica")) {
+  ongRenderListaPublica();
+}
+
+/* =========================================================
+   MISIONES SEMANALES + CELEBRACIÓN CON APLAUSOS
+========================================================= */
+function getSemanaActual() {
+  const ahora = new Date();
+  const inicioAño = new Date(ahora.getFullYear(), 0, 1);
+  const dias = Math.floor((ahora - inicioAño) / 86400000);
+  const semana = Math.ceil((dias + inicioAño.getDay() + 1) / 7);
+  return `${ahora.getFullYear()}-W${semana}`;
+}
+
+function obtenerMisiones() {
+  let m;
+  try {
+    m = JSON.parse(localStorage.getItem("suma_misiones"));
+  } catch (e) {
+    m = null;
+  }
+  const semanaActual = getSemanaActual();
+  if (!m || m.semana !== semanaActual) {
+    m = { semana: semanaActual, perfil: false, postulo: false, celebrado: false };
+    localStorage.setItem("suma_misiones", JSON.stringify(m));
+  }
+  return m;
+}
+
+function guardarMisiones(m) {
+  localStorage.setItem("suma_misiones", JSON.stringify(m));
+}
+
+function marcarMision(tipo) {
+  const m = obtenerMisiones();
+  m[tipo] = true;
+  guardarMisiones(m);
+  renderMisionWidget();
+  if (m.perfil && m.postulo && !m.celebrado) {
+    m.celebrado = true;
+    guardarMisiones(m);
+    celebrarMisionCumplida();
+  }
+}
+
+function renderMisionWidget() {
+  const m = obtenerMisiones();
+  const itemPerfil = document.getElementById("misionItemPerfil");
+  const itemPostulo = document.getElementById("misionItemPostulo");
+  if (!itemPerfil || !itemPostulo) return;
+
+  itemPerfil.querySelector(".mision-check").textContent = m.perfil ? "✅" : "⬜";
+  itemPostulo.querySelector(".mision-check").textContent = m.postulo ? "✅" : "⬜";
+
+  const estado = document.getElementById("misionEstadoTexto");
+  if (m.perfil && m.postulo) {
+    estado.textContent = "🎉 ¡Misión de la semana cumplida!";
+  } else if (m.perfil || m.postulo) {
+    estado.textContent = "¡Ya vas por la mitad, seguí así! 💪";
+  } else {
+    estado.textContent = "¡Vamos que se puede! 💪";
+  }
+}
+
+function misionToggleWidget() {
+  document.getElementById("misionPanel").classList.toggle("oculto");
+}
+
+function resetMisionSemana() {
+  const semanaActual = getSemanaActual();
+  const m = { semana: semanaActual, perfil: false, postulo: false, celebrado: false };
+  guardarMisiones(m);
+  renderMisionWidget();
+}
+
+function celebrarMisionCumplida() {
+  document.getElementById("misionPanel").classList.remove("oculto");
+  lanzarConfetti();
+  reproducirAplausos();
+}
+
+function lanzarConfetti() {
+  const cont = document.getElementById("confettiContainer");
+  const emojis = ["🎉", "🎊", "✨", "🏆", "👏"];
+  for (let i = 0; i < 28; i++) {
+    const pieza = document.createElement("span");
+    pieza.className = "confetti-pieza";
+    pieza.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    pieza.style.left = Math.random() * 100 + "vw";
+    pieza.style.fontSize = (1 + Math.random() * 1.2) + "rem";
+    pieza.style.animationDuration = (1.8 + Math.random() * 1.2) + "s";
+    pieza.style.animationDelay = (Math.random() * 0.5) + "s";
+    cont.appendChild(pieza);
+    setTimeout(() => pieza.remove(), 3500);
+  }
+}
+
+let audioAplausos = null;
+let aplausosRespaldoUsado = false;
+
+// Intenta reproducir un archivo de audio real (audio/aplausos.mp3) si existe en el proyecto.
+// Si el archivo no existe, no cargó, o el navegador bloquea la reproducción,
+// cae automáticamente al aplauso sintetizado (siempre suena algo).
+function reproducirAplausos() {
+  aplausosRespaldoUsado = false;
+
+  const usarRespaldo = () => {
+    if (aplausosRespaldoUsado) return;
+    aplausosRespaldoUsado = true;
+    reproducirAplausosSintetizados();
+  };
+
+  try {
+    if (!audioAplausos) {
+      audioAplausos = new Audio("audio/aplausos.mp3");
+      audioAplausos.preload = "auto";
+      audioAplausos.volume = 0.55;
+      audioAplausos.addEventListener("error", usarRespaldo);
+    }
+
+    audioAplausos.pause();
+    audioAplausos.currentTime = 0;
+
+    const promesa = audioAplausos.play();
+    if (promesa && typeof promesa.catch === "function") {
+      promesa.catch(usarRespaldo);
+    }
+
+    // Si a los 300ms no arrancó a sonar de verdad (readyState bajo), usamos el respaldo.
+    setTimeout(() => {
+      if (audioAplausos.paused || audioAplausos.readyState < 2) usarRespaldo();
+    }, 300);
+
+    // Se corta después de 2.8 segundos
+    setTimeout(() => {
+      audioAplausos.pause();
+      audioAplausos.currentTime = 0;
+    }, 2800);
+  } catch (e) {
+    usarRespaldo();
+  }
+}
+
+// Genera un sonido corto y natural de "aplauso de felicitaciones" (unas pocas palmadas, sin archivo de audio)
+function reproducirAplausosSintetizados() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioCtx();
+    const ahora = ctx.currentTime;
+
+    const cantidadPalmas = 5;
+    let t = ahora + 0.03;
+
+    for (let i = 0; i < cantidadPalmas; i++) {
+      reproducirUnaPalmada(ctx, t);
+      t += 0.1 + Math.random() * 0.05; // ritmo natural de palmadas, no una multitud
+    }
+  } catch (e) {
+    console.warn("No se pudo reproducir el sonido de aplausos:", e);
+  }
+}
+
+function reproducirUnaPalmada(ctx, t) {
+  const duracion = 0.07 + Math.random() * 0.02;
+  const bufferSize = Math.floor(ctx.sampleRate * duracion);
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+
+  for (let j = 0; j < bufferSize; j++) {
+    // envolvente suave (no exponencial pura) para evitar el efecto "pop"/globo
+    const progreso = j / bufferSize;
+    const envolvente = Math.pow(1 - progreso, 2.2);
+    data[j] = (Math.random() * 2 - 1) * envolvente;
+  }
+
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+
+  // Un solo filtro, ancho y con poca resonancia: así se escucha a palmada seca, no a tono/pop
+  const filtro = ctx.createBiquadFilter();
+  filtro.type = "bandpass";
+  filtro.frequency.value = 1100 + Math.random() * 700;
+  filtro.Q.value = 0.5;
+
+  const pasaBajos = ctx.createBiquadFilter();
+  pasaBajos.type = "lowpass";
+  pasaBajos.frequency.value = 3800;
+
+  const ganancia = ctx.createGain();
+  ganancia.gain.value = 0.5 + Math.random() * 0.2;
+
+  source.connect(filtro);
+  filtro.connect(pasaBajos);
+  pasaBajos.connect(ganancia);
+  ganancia.connect(ctx.destination);
+  source.start(t);
+}
+
+/* =========================================================
+   PREDICTOR DE EMPLEABILIDAD
+========================================================= */
+function initPredictor() {
+  const perfil = obtenerPerfil();
+  document.getElementById("predSinPerfil").classList.toggle("oculto", !!perfil);
+  document.getElementById("predConPerfil").classList.toggle("oculto", !perfil);
+}
+
+async function predictorAnalizar() {
+  let perfilTexto;
+  const perfil = obtenerPerfil();
+
+  if (perfil) {
+    perfilTexto = `Puesto de interés: ${perfil.puesto || "no especificado"}
+Experiencia / día a día: ${perfil.experiencia || "no especificada"}
+Educación: ${perfil.educacion || "no especificada"}
+Cursos: ${perfil.cursos || "ninguno"}
+Habilidades: ${(perfil.habilidades || []).join(", ") || "no especificadas"}
+Idiomas: ${perfil.idiomas || "Español"}
+Disponibilidad: ${perfil.disponibilidad || "no especificada"}`;
+  } else {
+    const puesto = document.getElementById("predPuesto").value.trim();
+    const experiencia = document.getElementById("predExperiencia").value.trim();
+    if (!puesto || !experiencia) { alert("Por favor completá el puesto y tu experiencia."); return; }
+    perfilTexto = `Puesto de interés: ${puesto}\nExperiencia / día a día: ${experiencia}`;
+  }
+
+  document.getElementById("predForm").style.display = "none";
+  document.getElementById("predLoading").style.display = "block";
+
+  const prompt = `Sos un especialista en empleabilidad en Argentina. Con el siguiente perfil de una persona, evaluá qué tan cerca está de conseguir distintos tipos de trabajo posibles (incluyendo el puesto que busca y 2 o 3 alternativas razonables según su perfil).
 
 Perfil:
-- Nivel educativo: ${educacion}
-- Años de experiencia laboral: ${experiencia} años
-- Habilidades destacadas: ${habilidades || "Ninguna seleccionada"}
+${perfilTexto}
+
+Para cada tipo de trabajo, calculá un porcentaje realista (0-100) de qué tan preparada está esa persona hoy, y qué le faltaría concretamente para acercarse al 100%.
 
 Respondé SOLO con este JSON, sin markdown ni texto extra:
 {
-  "score": "porcentaje numérico entre 0 y 100 sin el signo por ciento (ej: 75)",
-  "resumen": "Breve diagnóstico situacional de 2 o 3 oraciones usando español rioplatense.",
-  "sugerencias": [
-    "Recomendación concreta 1",
-    "Recomendación concreta 2",
-    "Recomendación concreta 3"
+  "resultados": [
+    {
+      "puesto": "nombre del puesto",
+      "porcentaje": número del 0 al 100,
+      "falta": ["cosa concreta que le falta 1", "cosa concreta 2", "cosa concreta 3"]
+    }
   ]
-}`;
+}
+
+Generá entre 3 y 4 resultados. Sé realista pero alentador, en español rioplatense.`;
 
   try {
     const texto = await llamarIA(prompt);
-    const resultado = JSON.parse(limpiarJSON(texto));
-    document.getElementById("empLoading").style.display = "none";
-    empMostrarResultado(resultado);
+    const regexJSON = /\{[\s\S]*\}/;
+    const coincidencia = texto.match(regexJSON);
+    const jsonFinal = coincidencia ? coincidencia[0] : texto.replace(/```json|```/g, "").trim();
+    const resultado = JSON.parse(jsonFinal);
+    document.getElementById("predLoading").style.display = "none";
+    predictorMostrarResultado(resultado);
   } catch (err) {
     console.error(err);
-    document.getElementById("empLoading").style.display = "none";
-    document.getElementById("empSetup").style.display = "block";
-    alert("Error al calcular la empleabilidad. Verificá tu API key e intentá de nuevo.");
+    document.getElementById("predLoading").style.display = "none";
+    document.getElementById("predForm").style.display = "block";
+    alert("Hubo un error al calcular tu empleabilidad. Verificá tu API key e intentá de nuevo.");
   }
 }
 
-function empMostrarResultado(r) {
-  const scoreVal = r.score ? r.score : 0;
-  document.getElementById("empScore").textContent = scoreVal + "%";
-  document.getElementById("empResumen").textContent = r.resumen || "";
-
-  let sugHTML = "";
-  if (r.sugerencias?.length) {
-    sugHTML = r.sugerencias.map(s => `<p>• ${s}</p>`).join("");
-  }
-  document.getElementById("empSugerencias").innerHTML = sugHTML;
-  document.getElementById("empResultado").classList.remove("oculto");
+function predictorMostrarResultado(r) {
+  const lista = r.resultados || [];
+  document.getElementById("predLista").innerHTML = lista.map(item => `
+    <div class="pred-item">
+      <div class="pred-item-header">
+        <strong>${item.puesto}</strong>
+        <span class="pred-pct">${item.porcentaje}%</span>
+      </div>
+      <div class="pred-bar-bg"><div class="pred-bar" style="width:${item.porcentaje}%"></div></div>
+      <div class="pred-falta-title">Para acercarte al 100% te falta:</div>
+      ${(item.falta || []).map(f => `<div class="pred-falta-item">${f}</div>`).join("")}
+    </div>
+  `).join("");
+  document.getElementById("predResultado").classList.remove("oculto");
 }
 
-function empReiniciar() { abrirHerramienta("empleabilidad"); }
+function predictorReiniciar() { abrirHerramienta("predictor"); }
+
+ongRenderListaPublica();
+renderMisionWidget();
