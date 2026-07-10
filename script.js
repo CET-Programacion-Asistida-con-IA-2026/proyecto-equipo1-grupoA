@@ -728,3 +728,233 @@ function empMostrarResultado(r) {
 }
 
 function empReiniciar() { abrirHerramienta("empleabilidad"); }
+
+/* =========================================================
+   PANEL DE ONGs Y VOLUNTARIADOS
+========================================================= */
+// Ahora las oportunidades viven en Firestore (colección "oportunidades"), // 
+let ongCache = [];       // copia local en memoria, se actualiza sola en tiempo real
+let ongListo = false;    // true cuando llegó la primera respuesta de Firestore
+
+function ongInitListener() {
+  db.collection("oportunidades").orderBy("fecha", "desc").onSnapshot((snapshot) => {
+    ongCache = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    ongListo = true;
+
+    // Si el usuario está mirando alguna de las pestañas, la re-dibujamos
+    // con los datos frescos apenas cambian (en cualquier navegador).
+    if (!document.getElementById("ongTabPublicas").classList.contains("oculto")) {
+      ongRenderListaPublica();
+    }
+    if (!document.getElementById("ongTabPanel").classList.contains("oculto")) {
+      ongPoblarSelector();
+    }
+  }, (error) => {
+    console.error("Error leyendo Firestore:", error);
+    document.getElementById("ongListaPublica").innerHTML =
+      "<p>No se pudo conectar con la base de datos. Revisá tu configuración de Firebase en firebase-config.js.</p>";
+  });
+}
+
+// Carga organizaciones de ejemplo solo si la colección está vacía
+// (para que el panel no se vea vacío la primera vez que alguien entra).
+async function ongSembrarEjemplosSiVacio() {
+  try {
+    const snap = await db.collection("oportunidades").limit(1).get();
+    if (!snap.empty) return; // ya hay datos reales, no tocamos nada
+
+    const ejemplos = [
+      {
+        ong: "TECHO Argentina",
+        titulo: "Voluntariado en asentamientos populares",
+        ubicacion: "Todo el país",
+        vacantes: 10,
+        descripcion: "Sumate a las actividades de fin de semana en barrios populares: construcción de viviendas de emergencia, apoyo escolar y trabajo comunitario junto a las familias.",
+        enlace: "https://argentina.techo.org/voluntariado/",
+        vistas: 0,
+        clics: 0
+      },
+      {
+        ong: "Cruz Roja Argentina",
+        titulo: "Voluntariado en tu filial local",
+        ubicacion: "Filiales en todo el país",
+        vacantes: 15,
+        descripcion: "Participá en actividades de gestión del riesgo, promoción de la salud y primeros auxilios. Mayores de 16 años, no se requiere experiencia previa.",
+        enlace: "https://www.cruzroja.org.ar/voluntariado/",
+        vistas: 0,
+        clics: 0
+      },
+      {
+        ong: "Cáritas Argentina",
+        titulo: "Voluntariado parroquial y comunitario",
+        ubicacion: "Más de 3.500 parroquias en el país",
+        vacantes: 20,
+        descripcion: "Sumate a un equipo local para acompañar a personas y familias en situación de vulnerabilidad. No se necesita experiencia previa.",
+        enlace: "https://caritas.org.ar/voluntariado/",
+        vistas: 0,
+        clics: 0
+      }
+    ];
+
+    for (const ej of ejemplos) {
+      await db.collection("oportunidades").add({
+        ...ej,
+        fecha: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+  } catch (error) {
+    console.error("Error sembrando ejemplos:", error);
+  }
+}
+
+// Arranca la conexión en tiempo real con Firestore apenas carga la página
+ongSembrarEjemplosSiVacio();
+ongInitListener();
+
+function ongCambiarTab(tab) {
+  document.querySelectorAll(".ong-tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.getElementById("ongTabPublicas").classList.toggle("oculto", tab !== "publicas");
+  document.getElementById("ongTabPublicar").classList.toggle("oculto", tab !== "publicar");
+  document.getElementById("ongTabPanel").classList.toggle("oculto", tab !== "panel");
+
+  if (tab === "publicas") { ongContarVistas(); ongRenderListaPublica(); }
+  if (tab === "panel") ongPoblarSelector();
+}
+
+// Suma una vista a cada oportunidad visible (una sola vez por cada vez que
+// se abre la pestaña, no en cada re-render en tiempo real).
+async function ongContarVistas() {
+  if (!ongCache.length) return;
+  try {
+    const batch = db.batch();
+    ongCache.forEach(o => {
+      batch.update(db.collection("oportunidades").doc(o.id), {
+        vistas: firebase.firestore.FieldValue.increment(1)
+      });
+    });
+    await batch.commit();
+  } catch (error) {
+    console.error("Error contando vistas:", error);
+  }
+}
+
+function ongRenderListaPublica() {
+  const cont = document.getElementById("ongListaPublica");
+  if (!ongListo) {
+    cont.innerHTML = "<p>Cargando oportunidades...</p>";
+    return;
+  }
+  if (!ongCache.length) {
+    cont.innerHTML = "<p>Todavía no hay voluntariados publicados. ¡Sé la primera organización en sumar una oportunidad!</p>";
+    return;
+  }
+
+  cont.innerHTML = ongCache.map(o => `
+    <div class="ong-oportunidad-card">
+      <div class="ong-oportunidad-header">
+        <div>
+          <h4>${o.titulo}</h4>
+          <div class="ong-oportunidad-meta">${o.ong} · ${o.ubicacion}</div>
+        </div>
+      </div>
+      <p>${o.descripcion}</p>
+      <div class="ong-oportunidad-footer">
+        <span class="ong-vistas">👁 ${o.vistas || 0} vistas · ${o.clics || 0} interesados · ${o.vacantes} vacante(s)</span>
+        <button class="btn" onclick="ongIrAPostular('${o.id}')">🤝 Postularme</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+async function ongIrAPostular(id) {
+  const oportunidad = ongCache.find(o => o.id === id);
+  if (!oportunidad) return;
+
+  if (!oportunidad.enlace) {
+    alert("Esta organización todavía no cargó un link oficial de postulación.");
+    return;
+  }
+
+  window.open(oportunidad.enlace, "_blank", "noopener,noreferrer");
+  marcarMision("postulo");
+
+  try {
+    await db.collection("oportunidades").doc(id).update({
+      clics: firebase.firestore.FieldValue.increment(1)
+    });
+  } catch (error) {
+    console.error("Error registrando el clic:", error);
+  }
+}
+
+document.getElementById("ongPublicarForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const boton = e.target.querySelector("button[type=submit]");
+  boton.disabled = true;
+  boton.textContent = "Publicando...";
+
+  const nueva = {
+    ong: document.getElementById("ongNombre").value.trim(),
+    titulo: document.getElementById("ongTitulo").value.trim(),
+    ubicacion: document.getElementById("ongUbicacion").value.trim(),
+    vacantes: parseInt(document.getElementById("ongVacantes").value) || 1,
+    descripcion: document.getElementById("ongDescripcion").value.trim(),
+    enlace: document.getElementById("ongEnlace").value.trim(),
+    vistas: 0,
+    clics: 0,
+    fecha: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  try {
+    await db.collection("oportunidades").add(nueva);
+    e.target.reset();
+    alert("¡Tu oportunidad de voluntariado fue publicada con éxito!");
+    ongCambiarTab("publicas");
+  } catch (error) {
+    console.error("Error publicando oportunidad:", error);
+    alert("Hubo un error al publicar. Revisá tu conexión y la configuración de Firebase.");
+  } finally {
+    boton.disabled = false;
+    boton.textContent = "Publicar Voluntariado";
+  }
+});
+
+function ongPoblarSelector() {
+  const nombres = [...new Set(ongCache.map(o => o.ong))];
+  const select = document.getElementById("ongSelectPropia");
+  const seleccionActual = select.value;
+  select.innerHTML = `<option value="">Seleccioná tu ONG...</option>` +
+    nombres.map(n => `<option value="${n}">${n}</option>`).join("");
+  if (nombres.includes(seleccionActual)) select.value = seleccionActual;
+  ongRenderPanel();
+}
+
+function ongRenderPanel() {
+  const nombreOng = document.getElementById("ongSelectPropia").value;
+  const cont = document.getElementById("ongPanelMetricas");
+  if (!nombreOng) { cont.innerHTML = ""; return; }
+
+  const lista = ongCache.filter(o => o.ong === nombreOng);
+  const totalVistas = lista.reduce((acc, o) => acc + (o.vistas || 0), 0);
+  const totalClics = lista.reduce((acc, o) => acc + (o.clics || 0), 0);
+
+  cont.innerHTML = `
+    <div class="ong-metricas-resumen">
+      <div class="ong-metrica-box"><div class="num">${lista.length}</div><div class="label">Oportunidades</div></div>
+      <div class="ong-metrica-box"><div class="num">${totalVistas}</div><div class="label">Alcance (vistas)</div></div>
+      <div class="ong-metrica-box"><div class="num">${totalClics}</div><div class="label">Clics en Postularme</div></div>
+    </div>
+    ${lista.map(o => `
+      <div class="ong-oportunidad-card">
+        <div class="ong-oportunidad-header">
+          <div>
+            <h4>${o.titulo}</h4>
+            <div class="ong-oportunidad-meta">${o.ubicacion} · ${o.vacantes} vacante(s)</div>
+          </div>
+          <span class="ong-vistas">👁 ${o.vistas} vistas · 🤝 ${o.clics || 0} clics</span>
+        </div>
+        <p style="font-size:0.85rem;color:#6b7280;">Link oficial de postulación: <a href="${o.enlace}" target="_blank">${o.enlace}</a></p>
+      </div>
+    `).join("")}
+  `;
+}
