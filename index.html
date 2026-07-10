@@ -724,6 +724,95 @@
     </div>
   </section>
 
+  <section id="panel-ongs" class="panel-ongs-section">
+    <h2>Panel de ONGs y Voluntariados</h2>
+    <p>Organizaciones reales pueden publicar oportunidades de voluntariado, ver su alcance y el interés que generan. Quien quiera postularse es dirigido directamente al canal oficial de cada organización.</p>
+
+    <div class="ong-tabs">
+      <button class="ong-tab-btn active" data-tab="publicas" onclick="ongCambiarTab('publicas')">🌎 Voluntariados Disponibles</button>
+      <button class="ong-tab-btn" data-tab="publicar" onclick="ongCambiarTab('publicar')">📢 Soy una ONG, quiero publicar</button>
+      <button class="ong-tab-btn" data-tab="panel" onclick="ongCambiarTab('panel')">📊 Panel de mi Organización</button>
+    </div>
+
+    <div id="ongTabPublicas" class="ong-tab-content">
+      <div id="ongListaPublica"></div>
+    </div>
+
+    <div id="ongTabPublicar" class="ong-tab-content oculto">
+      <div class="review-form-container">
+        <h3>Publicá tu oportunidad de voluntariado</h3>
+        <form id="ongPublicarForm">
+          <input type="text" id="ongNombre" placeholder="Nombre de tu organización (ONG)" required>
+          <input type="text" id="ongTitulo" placeholder="Título de la oportunidad (Ej: Voluntario/a para comedor comunitario)" required>
+          <input type="text" id="ongUbicacion" placeholder="Ubicación (Ej: Quilmes, Buenos Aires)" required>
+          <input type="number" id="ongVacantes" placeholder="Cantidad de vacantes" min="1" value="1" required>
+          <textarea id="ongDescripcion" placeholder="Contanos de qué se trata, requisitos y cómo contactarlos..." required></textarea>
+          <input type="url" id="ongEnlace" placeholder="Link oficial donde la gente puede postularse (tu web, formulario, red social oficial)" required>
+          <p style="font-size:0.8rem;color:#6b7280;margin-top:-0.5rem;margin-bottom:1rem;">Al hacer clic en "Postularme", quien te vea será redirigido/a directamente a este link para anotarse.</p>
+          <button type="submit" class="btn">Publicar Voluntariado</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="ongTabPanel" class="ong-tab-content oculto">
+      <div class="ong-panel-selector">
+        <label for="ongSelectPropia">Seleccioná tu organización para ver sus métricas</label>
+        <select id="ongSelectPropia" onchange="ongRenderPanel()">
+          <option value="">Seleccioná tu ONG...</option>
+        </select>
+      </div>
+      <div id="ongPanelMetricas"></div>
+    </div>
+  </section>
+
+  <section id="comentarios">
+    <h2>Dejanos tu Comentario</h2>
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormComentario()">💬 Dejar un comentario</button>
+    </div>
+    <div id="comentarioFormWrap" class="oculto">
+      <form id="comentarioForm">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" placeholder="Tu nombre" required>
+        <label for="comentario">Comentario</label>
+        <textarea id="comentario" placeholder="Escribí tu mensaje acá..." required></textarea>
+        <button type="submit" class="btn">Enviar Comentario</button>
+      </form>
+    </div>
+    <div id="comentariosLista"></div>
+  </section>
+
+  <section id="foro-empleo">
+    <h2>Foro de Empleos</h2>
+    <p>Compartí o buscá oportunidades laborales publicadas por la comunidad.</p>
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormForo()">📢 Quiero publicar un aviso</button>
+    </div>
+    <div id="foroFormWrap" class="oculto">
+      <form id="foroForm" class="foro-form">
+        <input type="text" id="tituloAviso" placeholder="Título del empleo" required>
+        <textarea id="detalleAviso" placeholder="Detalles del puesto y contacto..." required></textarea>
+        <button type="submit" class="btn">Publicar Aviso</button>
+      </form>
+    </div>
+    <div id="listaAvisos"></div>
+  </section>
+
+  <section id="voluntariado">
+    <h2>Sumate como Voluntario</h2>
+    <p>Tu tiempo puede transformar vidas. Inscribite para colaborar en nuestros puntos de donación.</p>
+    <div class="review-form-trigger">
+      <button class="btn btn-dark" onclick="toggleFormVoluntario()">🤝 Quiero ser Voluntario</button>
+    </div>
+    <div id="voluntarioFormWrap" class="oculto">
+      <form id="voluntarioForm">
+        <input type="text" id="nombreVol" placeholder="Nombre completo" required>
+        <input type="email" id="emailVol" placeholder="Tu correo electrónico" required>
+        <button type="submit" class="btn">¡Inscribirme!</button>
+      </form>
+    </div>
+  </section>
+
   <section id="comentarios">
     <h2>Dejanos tu Comentario</h2>
     <div class="review-form-trigger">
